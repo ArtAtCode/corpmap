@@ -1,0 +1,17 @@
+<!--如果不想在Idea里看见th提示not bound, 请使用以下3行-->
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ArtAtCode</title>
+</head>
+<body>
+    <h1>访问成功</h1>
+    <!--
+    thymeleaf使用示例,接收了来自服务器的"info"
+    -->
+    <p th:text="${info}">如果你看到这段话表示Spring运行正常，thymeleaf运行失败</p>
+</body>
+</html>

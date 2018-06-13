@@ -1,0 +1,28 @@
+server:
+  port: 8080
+  servlet:
+    path: /
+
+spring:
+  jackson:
+    # 解决时间差的问题
+    time-zone: GMT+8
+  datasource:
+    url: jdbc:mysql://数据库IP:端口/数据库名?characterEncoding=utf8
+    username: 用户名
+    password: 密码
+    driver-class-name: com.mysql.jdbc.Driver
+    tomcat:
+      max-wait: 10000
+      max-active: 30
+    hikari:
+      connection-timeout: 30000
+      idle-timeout: 600000
+      maximum-pool-size: 15
+      max-lifetime: 1800000
+
+# Mybatis的配置
+# TODO: 修改mybatis配置
+mybatis:
+  mapperlocations: /mapper/**Mapper.xml
+  type-aliases-package: edu.scu.corpmap.entity
