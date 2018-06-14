@@ -5,7 +5,7 @@ server:
 
 spring:
   jackson:
-    # 解决时间差的问题
+    # get correct time
     time-zone: GMT+8
   datasource:
     url: jdbc:mysql://数据库IP:端口/数据库名?characterEncoding=utf8
@@ -20,9 +20,14 @@ spring:
       idle-timeout: 600000
       maximum-pool-size: 15
       max-lifetime: 1800000
+  data:
+    neo4j:
+      uri: bolt://34.232.53.166:36084
+      username: neo4j
+      password: deliveries-ladders-sweeper
 
-# Mybatis的配置
-# TODO: 修改mybatis配置
+# Mybatis configuration
+# TODO: change mybatis configuration
 mybatis:
   mapperlocations: /mapper/**Mapper.xml
   type-aliases-package: edu.scu.corpmap.entity
