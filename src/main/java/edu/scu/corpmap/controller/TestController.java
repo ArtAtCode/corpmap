@@ -30,13 +30,11 @@ public class TestController {
     // 没有标记ResponseBody的将会返回网页，下面的方法会
     @RequestMapping("Welcome")
     public String Welcome(ModelMap map) {
+        String result = testService.testEmb();
+
         // 将数据传递至页面,具体接收方式看resources/template/welcome.html
         map.addAttribute("info", "如果你能看到这段话证明Spirng运行正常+Thymeleaf运行正常");
-
-        // neo4j
-        Integer count = testService.countAll();
-        map.addAttribute("count", "neo4j查询个数: " + count);
-
+        map.addAttribute("count", result);
         // 返回网页,默认不加上 .html,加上后反而有可能报404
         return "welcome";
     }

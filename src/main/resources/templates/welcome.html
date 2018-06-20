@@ -13,6 +13,7 @@
     thymeleaf使用示例,接收了来自服务器的"info"
     -->
     <p th:text="${info}">如果你看到这段话表示Spring运行正常，thymeleaf运行失败</p>
-    <p th:text="${count}">neo4j查询失败</p>
+    <p>Neo4J连接结果：</p>
+    <pre th:text="${count}">连接失败</pre>
 </body>
 </html>
