@@ -1,6 +1,8 @@
 package edu.scu.corpmap.service;
 
 import edu.scu.corpmap.entity.neo4j.*;
+import edu.scu.corpmap.result.BriefCorp;
+import edu.scu.corpmap.result.FuzzyHintCorp;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,7 @@ public class CorpServiceTest {
     @Test
     public void quickFuzzyQuery() {
 
-        List<FuzzyCorp> list = corpService.quickFuzzyQuery("腾讯");
+        List<FuzzyHintCorp> list = corpService.getQueryHint("腾讯");
        for(int i=0;i<list.size();i++){
            System.out.println(list.get(i).getCorpName());
            System.out.println(list.get(i).getGraphId());
@@ -36,19 +38,19 @@ public class CorpServiceTest {
     }
     @Test
     public void queryCorpByGraphId(){
-        BasicCorp basicCorp = corpService.queryCropByGraphId(0);//0
-        System.out.println(basicCorp.getModifications());
-        for(Partner partner:basicCorp.getPartners()){
+        Corp corp = corpService.queryCorpByGraphId(0);//0
+        System.out.println(corp.getModifications());
+        for(Partner partner: corp.getPartners()){
             System.out.println(partner.getPartner_id());
 
         }
-        for(Shareholder shareholder : basicCorp.getShareholders()){
+        for(Shareholder shareholder : corp.getShareholders()){
             System.out.println(shareholder.getSh_name());
             System.out.println(shareholder.getSh_type());
             System.out.println(shareholder.getActual_subscription());
             System.out.println(shareholder.getSubscription());
         }
-        for(IrgOperation irg : basicCorp.getIrgOpts()){
+        for(IrgOperation irg : corp.getIrgOpts()){
             System.out.println(irg.getIrgReason());
             System.out.println(irg.getDeIrgReason());
             System.out.println(irg.getIrgAuth());
