@@ -1,11 +1,9 @@
 package edu.scu.corpmap.service;
 
-import edu.scu.corpmap.entity.neo4j.TestMovie;
-import edu.scu.corpmap.repositories.TestRepository;
+import org.neo4j.graphdb.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
 
 /**
  * Created by Vicent_Chen on 2018/6/13.
@@ -14,24 +12,14 @@ import java.util.Collection;
 // Service类一般用于与数据库交互
 @Service
 public class TestService {
+    @Autowired
+    private GraphDatabaseService graphDatabaseService;
 
-    private final TestRepository testRepository;
-    public TestService(TestRepository testRepository) {
-        this.testRepository = testRepository;
-    }
-
-    @Transactional(readOnly = true)
-    public TestMovie findByTitle(String title) {
-        return testRepository.findByTitle(title);
-    }
-
-    @Transactional(readOnly = true)
-    public Collection<TestMovie> findByTitleLike(String title) {
-        return testRepository.findByTitleLike(title);
-    }
-
-    @Transactional(readOnly = true)
-    public Integer countAll() {
-        return testRepository.countAll();
+    @Transactional
+    public String testEmb() {
+        try(Transaction tx = graphDatabaseService.beginTx()){
+            Result result = graphDatabaseService.execute("MATCH (n) RETURN count(n) AS c;");
+            return result.resultAsString();
+        }
     }
 }

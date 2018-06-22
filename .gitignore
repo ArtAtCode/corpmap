@@ -1,6 +1,10 @@
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
+# NEO4J
+C/
+${neo4j.embedded-path/
+
 ### STS ###
 .apt_generated
 .classpath
