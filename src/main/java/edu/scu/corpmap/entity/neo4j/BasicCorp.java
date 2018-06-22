@@ -20,9 +20,16 @@ public class BasicCorp {
     private int mark; //1-股份制公司 2-合伙制公司
     private List<Shareholder> shareholders; //  List类型会被映射为jsonarray
     private List<IrgOperation> irgOpts;//经营异常信息
-    private List<Modification> modifications;//变更信息
     private List<Partner> partners;//合伙人
+    private String modifications;//变更信息，存在节点中，是一个jsonarray的形式
 
+    public String getModifications() {
+        return modifications;
+    }
+
+    public void setModifications(String modifications) {
+        this.modifications = modifications;
+    }
 
     public long getGraph_id() {
         return graph_id;
@@ -157,14 +164,6 @@ public class BasicCorp {
 
     public void setIrgOpts(List<IrgOperation> irgOpts) {
         this.irgOpts = irgOpts;
-    }
-
-    public List<Modification> getModifications() {
-        return modifications;
-    }
-
-    public void setModifications(List<Modification> modifications) {
-        this.modifications = modifications;
     }
 
     public List<Partner> getPartners() {

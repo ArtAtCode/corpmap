@@ -2,13 +2,31 @@ package edu.scu.corpmap.entity.neo4j;
 
 public class Partner {
     private String partner_id;
-    private String pt_name;
+    private String partner_name;
     private String subscription;
     private String actual_subscription;
     private String method;
     private String partnerType;
+
+    public String getPartner_name() {
+        return partner_name;
+    }
+
+    public void setPartner_name(String partner_name) {
+        this.partner_name = partner_name;
+    }
+
     private String subscp_date;
     private String actual_subscp_date;
+    private long graphId;
+
+    public long getGraphId() {
+        return graphId;
+    }
+
+    public void setGraphId(long graphId) {
+        this.graphId = graphId;
+    }
 
     public String getPartnerType() {
         return partnerType;
@@ -24,14 +42,6 @@ public class Partner {
 
     public void setPartner_id(String partner_id) {
         this.partner_id = partner_id;
-    }
-
-    public String getPt_name() {
-        return pt_name;
-    }
-
-    public void setPt_name(String pt_name) {
-        this.pt_name = pt_name;
     }
 
     public String getSubscription() {

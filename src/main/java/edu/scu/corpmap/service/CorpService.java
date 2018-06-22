@@ -1,16 +1,13 @@
 package edu.scu.corpmap.service;
 
 
-import edu.scu.corpmap.entity.neo4j.BasicCorp;
-import edu.scu.corpmap.entity.neo4j.BriefCorp;
-import edu.scu.corpmap.entity.neo4j.FuzzyCorp;
+import edu.scu.corpmap.entity.neo4j.*;
 import edu.scu.corpmap.utils.IKAnalyzer5x;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Transaction;
+import org.bouncycastle.math.raw.Mod;
+import org.neo4j.graphdb.*;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.index.IndexHits;
 import org.neo4j.graphdb.index.IndexManager;
@@ -116,10 +113,14 @@ public class CorpService {
     //返回详细信息
     public BasicCorp queryCropByGraphId(long graphId){
         BasicCorp basicCorp = new BasicCorp();
+
         try(Transaction tx = graphDatabaseService.beginTx()){
-            Node foundNode = graphDatabaseService.getNodeById(graphId);
-            basicCorp.setAddress(foundNode.getProperty("address").toString());
-            basicCorp.setCheckdate(foundNode.getProperty("chekcdate").toString());
+
+            Node foundNode = graphDatabaseService.getNodeById(graphId);//根据底层id找到节点
+            String modifications = foundNode.getProperty("modification","").toString();//节点里的异常信息是以字符串存的
+            basicCorp.setModifications(modifications);
+            basicCorp.setAddress(foundNode.getProperty("address","").toString());
+            basicCorp.setCheckdate(foundNode.getProperty("checkdate").toString());
             basicCorp.setEng_name(foundNode.getProperties("Eng_name").toString());
             basicCorp.setField(foundNode.getProperty("field").toString());
             basicCorp.setId(foundNode.getProperty("id").toString());
@@ -133,8 +134,61 @@ public class CorpService {
             basicCorp.setReg_date(foundNode.getProperty("reg_date").toString());
             basicCorp.setType(foundNode.getProperty("type").toString());
             //mark还没加
+            Iterable<Relationship> partnerRelationships = foundNode.getRelationships(Direction.INCOMING,MyRelationship.合伙人);//不存在关系则会返回空
+            Iterable<Relationship> stockRelationships = foundNode.getRelationships(Direction.INCOMING,MyRelationship.股东);//不存在关系则会返回空
+            Iterable<Relationship> irgRelationships = foundNode.getRelationships(Direction.OUTGOING,MyRelationship.经营异常);
+            List shareholderList =new ArrayList<Shareholder>();
+            List partnerList = new ArrayList<Partner>();
+            List irgOptList = new ArrayList<IrgOperation>();
 
 
+            for(Relationship r :stockRelationships){
+                Shareholder shareholder = new Shareholder();
+                Node startNode = r.getStartNode();
+                shareholder.setSh_id(startNode.getProperty("id","").toString());//人没有id
+                shareholder.setGraphId(startNode.getId());
+                shareholder.setSh_name(startNode.getProperty("name").toString());
+                shareholder.setMethod(r.getProperty("method","现金").toString());
+                shareholder.setActual_subscp_date(r.getProperty("actual_subscrp_date","").toString());
+                shareholder.setSubscription(r.getProperty("subscription","").toString());
+                shareholder.setSh_type(r.getProperty("sh_type","").toString());
+                shareholder.setSubscp_date(r.getProperty("subscp_date","").toString());
+                shareholder.setActual_subscription(r.getProperty("actual_subscription","").toString());
+                shareholderList.add(shareholder);
+            }
+            for(Relationship r :partnerRelationships){
+                Partner partner = new Partner();
+                Node startNode = r.getStartNode();
+                partner.setPartner_id(startNode.getProperty("id","").toString());//人没有id
+                partner.setGraphId(startNode.getId());
+                partner.setPartner_name(startNode.getProperty("name").toString());
+                partner.setMethod(r.getProperty("method","现金").toString());
+                partner.setActual_subscp_date(r.getProperty("actual_subscrp_date","").toString());
+                partner.setSubscription(r.getProperty("subscription","").toString());
+                partner.setPartnerType(r.getProperty("sh_type","").toString());
+                partner.setSubscp_date(r.getProperty("subscp_date","").toString());
+                partner.setActual_subscription(r.getProperty("actual_subscription","").toString());
+                partnerList.add(partner);
+            }
+            for(Relationship r:irgRelationships){
+                IrgOperation irgOpt = new IrgOperation();
+                Node endNode = r.getEndNode();
+                irgOpt.setIrgReason(endNode.getProperty("irgReason","").toString());
+                irgOpt.setDeIrgAuth(endNode.getProperty("deIrgAuth","").toString());
+                irgOpt.setIrgAuth(endNode.getProperty("irgAuth","").toString());
+                irgOpt.setIrgDate(endNode.getProperty("irgDate","").toString());
+                irgOpt.setDeIrgDate(endNode.getProperty("deIrgDate","").toString());
+                irgOpt.setDeIrgReason(endNode.getProperty("deIrgReason","").toString());
+                irgOptList.add(irgOpt);
+            }
+            basicCorp.setShareholders(shareholderList);
+            basicCorp.setPartners(partnerList);
+            basicCorp.setIrgOpts(irgOptList);
+
+
+
+
+            tx.success();
         }
         return basicCorp;
     }
