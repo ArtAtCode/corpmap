@@ -1,22 +1,14 @@
 package edu.scu.corpmap.entity.neo4j;
 
 public class Shareholder {
-    private String sh_id; // 股东证件号码
-    private String sh_name; // 股东名称
-    private String method; // 认缴出资方式
-    private String subscp_date; // 认缴出资日期
-    private String actual_subscp_date; // 实缴出资日期
-    private String actual_subscription; // 实缴额
-    private String subscription; // 认缴额
-    private String sh_type; // 股东类型
-
-    public String getSh_id() {
-        return sh_id;
-    }
-
-    public void setSh_id(String sh_id) {
-        this.sh_id = sh_id;
-    }
+    private String sh_name;//名称
+    private String sh_id;//统一社会信用代码，人没有
+    private String method;//认缴方式
+    private String subscp_date;//认缴日期
+    private String actual_subscp_date;//实际认缴日期
+    private String actual_subscription;//实际认缴金额
+    private String subscription;//认缴金额
+    private String sh_type;//股东类型只有两种“人” “企业”
 
     public String getSh_name() {
         return sh_name;
@@ -24,6 +16,14 @@ public class Shareholder {
 
     public void setSh_name(String sh_name) {
         this.sh_name = sh_name;
+    }
+
+    public String getSh_id() {
+        return sh_id;
+    }
+
+    public void setSh_id(String sh_id) {
+        this.sh_id = sh_id;
     }
 
     public String getMethod() {

@@ -1,12 +1,31 @@
 package edu.scu.corpmap.entity.neo4j;
 
 public class BriefCorp {
-    private String type; // 公司类型或者个体工商户
-    private String reg_auth; // 注册机关
-    private String id; // 统一社会信用代码
-    private String state; // 经营状态
-    private String reg_date; // 成立日期
-    private String name; // 企业名称
+    private String type;//公司类型或者个体工商户
+    private String reg_auth;//注册机关
+    private String id;//统一社会信用代码
+    private String state;//经营状态
+    private String reg_date;//成立日期
+    private String name;
+    private long graphId;
+
+    public long getGraphId() {
+        return graphId;
+    }
+
+    public void setGraphId(long graphId) {
+        this.graphId = graphId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
 
     public String getType() {
         return type;
@@ -48,11 +67,5 @@ public class BriefCorp {
         this.reg_date = reg_date;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 }
