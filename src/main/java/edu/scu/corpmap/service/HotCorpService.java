@@ -69,7 +69,7 @@ public class HotCorpService {
         HotCorp hotCorp =  getHotCoprById(id);
         if (hotCorp == null) {
             hotCorp = new HotCorp();
-            hotCorp.setId(id);  hotCorp.setName(null);
+            hotCorp.setId(id);  hotCorp.setName(name);
             insertHotCorp(hotCorp);
         }
         else {
