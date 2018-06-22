@@ -253,4 +253,20 @@
       count = #{count,jdbcType=BIGINT}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="selectByExampleUsingLimit" parameterType="edu.scu.corpmap.entity.mysql.HotCorpExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from hot_corp
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+      limit ${offset}, ${limit}
+  </select>
 </mapper>
