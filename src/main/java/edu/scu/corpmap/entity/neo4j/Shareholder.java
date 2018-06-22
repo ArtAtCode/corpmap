@@ -9,6 +9,15 @@ public class Shareholder {
     private String actual_subscription;//实际认缴金额
     private String subscription;//认缴金额
     private String sh_type;//股东类型只有两种“人” “企业”
+    private long graphId;
+
+    public long getGraphId() {
+        return graphId;
+    }
+
+    public void setGraphId(long graphId) {
+        this.graphId = graphId;
+    }
 
     public String getSh_name() {
         return sh_name;

@@ -1,7 +1,6 @@
 package edu.scu.corpmap.service;
 
-import edu.scu.corpmap.entity.neo4j.BriefCorp;
-import edu.scu.corpmap.entity.neo4j.FuzzyCorp;
+import edu.scu.corpmap.entity.neo4j.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,27 @@ public class CorpServiceTest {
             System.out.println(list.get(i).getName());
             System.out.println(list.get(i).getGraphId());
         }
+    }
+    @Test
+    public void queryCorpByGraphId(){
+        BasicCorp basicCorp = corpService.queryCropByGraphId(0);//0
+        System.out.println(basicCorp.getModifications());
+        for(Partner partner:basicCorp.getPartners()){
+            System.out.println(partner.getPartner_id());
+
+        }
+        for(Shareholder shareholder : basicCorp.getShareholders()){
+            System.out.println(shareholder.getSh_name());
+            System.out.println(shareholder.getSh_type());
+            System.out.println(shareholder.getActual_subscription());
+            System.out.println(shareholder.getSubscription());
+        }
+        for(IrgOperation irg : basicCorp.getIrgOpts()){
+            System.out.println(irg.getIrgReason());
+            System.out.println(irg.getDeIrgReason());
+            System.out.println(irg.getIrgAuth());
+        }
+
     }
 
 }

@@ -1,5 +1,5 @@
 package edu.scu.corpmap.entity.neo4j;
-
+//暂时不用
 public class Modification {
     private String title;//变更事项
     private String priorContent;//变更前内容
