@@ -1,14 +1,22 @@
 package edu.scu.corpmap.entity.neo4j;
 
 public class Partner {
-    private String partner_id; // 证件号
-    private String pt_name; // 名称
-    private String subscription; // 认缴额
-    private String actual_subscription; // 实缴额
-    private String method; // 认缴出资方式
-    private String subscp_date; // 认缴出资日期
-    private String actual_subscp_date; // 实缴出资日期
-    private String partnerType; // 合伙人类型
+    private String partner_id;
+    private String pt_name;
+    private String subscription;
+    private String actual_subscription;
+    private String method;
+    private String partnerType;
+    private String subscp_date;
+    private String actual_subscp_date;
+
+    public String getPartnerType() {
+        return partnerType;
+    }
+
+    public void setPartnerType(String partnerType) {
+        this.partnerType = partnerType;
+    }
 
     public String getPartner_id() {
         return partner_id;
@@ -48,14 +56,6 @@ public class Partner {
 
     public void setMethod(String method) {
         this.method = method;
-    }
-
-    public String getPartnerType() {
-        return partnerType;
-    }
-
-    public void setPartnerType(String partnerType) {
-        this.partnerType = partnerType;
     }
 
     public String getSubscp_date() {
