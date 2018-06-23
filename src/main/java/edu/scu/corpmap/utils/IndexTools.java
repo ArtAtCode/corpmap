@@ -34,4 +34,30 @@ public class IndexTools {
         }
 
     }
+    /**
+     * 对含有id的企业和个体工商户的id属性建立模式索引（cypher建立的索引无法在neo4j java api里调用）
+     * 模式索引名字为 "corpId"
+     * @param  db 单例GraphDatabaseService
+     * @return void
+     */
+    public  void createSchemaIndex(GraphDatabaseService db){
+        try (Transaction tx = db.beginTx()) {
+            ResourceIterator<Node> corpIterator = db.findNodes(MyNodeLabel.企业);
+            ResourceIterator<Node> indBusiIterator = db.findNodes(MyNodeLabel.个体工商户);
+            IndexManager indexManager = db.index();
+            Index<Node> schemaIndex = indexManager.forNodes("corpId");
+            trvNodeCreateSchemaIndex(corpIterator,schemaIndex);
+            trvNodeCreateSchemaIndex(indBusiIterator,schemaIndex);
+            tx.success();
+        }
+    }
+    private void trvNodeCreateSchemaIndex( ResourceIterator<Node>  iterator,Index<Node> schemaIndex){
+        while (iterator.hasNext()){
+            Node node = iterator.next();
+            //对个体工商户节点，id字段新建全文索引
+            Object corpId = node.getProperty( "id", null);
+            if(corpId==null) continue;
+            schemaIndex.add(node, "id", corpId.toString());
+        }
+    }
 }

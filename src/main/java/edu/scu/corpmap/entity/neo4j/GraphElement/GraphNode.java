@@ -1,9 +1,10 @@
 package edu.scu.corpmap.entity.neo4j.GraphElement;
 
 public  class GraphNode {
-    private String name;//企业名字
+    private String name;//企业或者人的名字
     private String image;
     private String id;//企业统一社会信用代码
+
 
     public String getId() {
         return id;
