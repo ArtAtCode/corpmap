@@ -1,6 +1,6 @@
 package edu.scu.corpmap.controller;
 
-import edu.scu.corpmap.entity.neo4j.BriefCorp;
+
 import edu.scu.corpmap.service.CorpService;
 import edu.scu.corpmap.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +44,10 @@ public class TestController {
         // 返回网页,默认不加上 .html,加上后反而有可能报404
         return "welcome";
     }
-    @RequestMapping("testFuzzy")
-    @ResponseBody
-    public List<BriefCorp> testFuzzy(String keyword ){
-        return corpService.fuzzyQuery(keyword);
-    }
+//    @RequestMapping("testFuzzy")
+//    @ResponseBody
+//    public List<BriefCorp> testFuzzy(String keyword ){
+//        return corpService.fuzzyQuery(keyword);
+//    }
 
 }
