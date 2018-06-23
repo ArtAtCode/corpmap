@@ -140,15 +140,16 @@ public class CorpService {
      * 根据节点ID查询企业信息
      *
      * @param graphId 节点ID
-     * @return 企业信息
+     * @return 企业信息或null
      */
     @Transactional
     public Corp queryCorpByGraphId(long graphId) {
-        Corp corp = new Corp();
-        corp.setGraph_id(graphId);
+
         try (Transaction tx = graphDatabaseService.beginTx()) {
 
-            Node foundNode = graphDatabaseService.getNodeById(graphId);//根据底层id找到节点
+            Corp corp = new Corp();
+            corp.setGraph_id(graphId);
+            Node foundNode = graphDatabaseService.getNodeById(graphId);
 
             //TODO: mark还没加
             Iterable<Relationship> partnerRelationships = foundNode.getRelationships(Direction.INCOMING, MyRelationship.合伙人);//不存在关系则会返回空
@@ -168,8 +169,13 @@ public class CorpService {
             corp.setIrgOpts(irgOptList);
 
             tx.success();
+
+            return corp;
         }
-        return corp;
+        catch (NotFoundException e) {
+            // 返回null方便前端进行判断
+            return null;
+        }
     }
 
     /**
