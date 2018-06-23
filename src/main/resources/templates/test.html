@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>test.html</title>
+    <meta charset="utf-8">
+	<link rel="stylesheet" href="assets/bootstrap/bootstrap.min.css">
+	<script src="assets/bootstrap/jquery.min.js"></script>
+	<script src="assets/bootstrap/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="assets/bootstrap/bootstrap-select.min.css">
+	<script src="assets/bootstrap/bootstrap-select.js"></script>
+  </head>
+  
+  <body>
+    <h1> This is my HTML page. </h1>
+    <select id="slpk" class="selectpicker" data-live-search="true" multiple></select>  
+    <script type="text/javascript">
+    $(function() {  
+        //下拉数据加载  
+        $.ajax({  
+            type : 'get',  
+            url : "json/test.json",  
+            dataType : 'json',  
+            success : function(datas) {//返回list数据并循环获取  
+                var select = $("#history");  
+                for (var i = 0; i < datas.history.length; i++) {  
+                    select.append("<option>" + datas.history[i].NAME + "</option>");  
+                }  
+            }  
+        });  
+    });  
+    </script>
+    
+    <div class="col-lg-3">
+    </div>
+   
+    <div class="col-lg-6">
+        <div class="row" style="margin-top:200px; margin-bottom:20px">
+            <h2 style="color:#fff; font-size:35px; text-align:center; letter-spacing: 3px;">企业信息族谱分析</h2>
+        </div>
+        <form action="search_list.html" class="bs-example bs-example-form" role="form">
+        	<div class="input-group input-group-lg">
+        		<input type="text" id="search" name="search" list="history" autocomplete="off" style="height:42px; background-color: rgba(0, 0, 0, 0)" class="form-control" placeholder="请输入企业名称或统一社会信用代码">
+        		<datalist id="history" style=" border-top-width:0px; border-left-width:0px; border-right-width:0px; border-bottom-width:0px; ">
+				</datalist>   
+        		<span class="input-group-btn" >
+        			<button class="btn btn-default" style="height:42px; background-color: rgba(255,255,255, 0.8)" type="submit">查询</button>
+                </span>         
+	        </div>
+	        
+        </form>
+        
+    </div>
+    <table class="table">
+	
+	<tbody>
+		<tr>
+			<td>001</td>
+			<td>Rammohan </td>
+			<td>Reddy</td>
+			<td>A+</td>
+		</tr>
+		<tr>
+			<td>002</td>
+			<td>Smita</td>
+			<td>Pallod</td>
+			<td>A</td>
+		</tr>
+		<tr>
+			<td>003</td>
+			<td>Rabindranath</td>
+			<td>Sen</td>
+			<td>A+</td>
+		</tr>
+	</tbody>
+</table>
+                    
+	
+  </body>
+</html>
