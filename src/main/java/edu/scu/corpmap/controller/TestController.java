@@ -1,11 +1,15 @@
 package edu.scu.corpmap.controller;
 
+import edu.scu.corpmap.entity.neo4j.BriefCorp;
+import edu.scu.corpmap.service.CorpService;
 import edu.scu.corpmap.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * Created by Vicent_Chen on 2018/6/13.
@@ -17,6 +21,8 @@ public class TestController {
     // AutoWired注解:使用这个注解就不用自己new,统一交由Spring管理
     @Autowired
     private TestService testService;
+    @Autowired
+    private CorpService corpService;
 
     // RequestMapping 注解：标记为RequestMapping的方法能够接收特定的HTTP请求
     // 如这一方法接收 http://localhost:8080/
@@ -38,4 +44,10 @@ public class TestController {
         // 返回网页,默认不加上 .html,加上后反而有可能报404
         return "welcome";
     }
+    @RequestMapping("testFuzzy")
+    @ResponseBody
+    public List<BriefCorp> testFuzzy(String keyword ){
+        return corpService.fuzzyQuery(keyword);
+    }
+
 }

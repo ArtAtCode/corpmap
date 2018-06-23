@@ -25,8 +25,6 @@ public class BriefCorp {
         this.name = name;
     }
 
-
-
     public String getType() {
         return type;
     }
@@ -66,6 +64,5 @@ public class BriefCorp {
     public void setReg_date(String reg_date) {
         this.reg_date = reg_date;
     }
-
 
 }
