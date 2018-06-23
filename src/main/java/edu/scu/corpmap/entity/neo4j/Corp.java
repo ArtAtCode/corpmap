@@ -2,7 +2,7 @@ package edu.scu.corpmap.entity.neo4j;
 
 import java.util.List;
 
-public class BasicCorp {
+public class Corp {
     private String introduction;
     private String name;
     private String mail;

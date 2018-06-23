@@ -1,4 +1,4 @@
-package edu.scu.corpmap.configuration;
+package edu.scu.corpmap.conf;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
@@ -12,7 +12,7 @@ import java.io.File;
  * Created by Vicent_Chen on 2018/6/17.
  */
 @Configuration
-public class TestConfiguration {
+public class CorpmapConfiguration {
 
     @Value("${neo4j.embedded-path}")
     private String dbPath;
