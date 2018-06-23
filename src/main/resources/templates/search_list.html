@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>企业信息族谱分析-查询结果</title>
+	<link rel="stylesheet" href="assets/bootstrap/bootstrap.min.css">
+	<script src="assets/bootstrap/jquery.min.js"></script>
+	<script src="assets/bootstrap/bootstrap.min.js"></script>
+	<style type="text/css"> 
+		td
+		{
+			border-top:0px;
+		} 
+		#company_name
+		{
+			padding-left:8px;
+			font-size:20px;
+		}
+		#jumbotron
+		{
+		    min-height:768px;
+		    height:auto;
+		    padding: 0px 0px 0px 0px;
+		    margin: 0px 0px 0px 0px;
+		    background-size: 100% 100%;
+		    background: rgba(255, 255, 255, 0.8);
+		}
+	</style> 
+	<script type="text/javascript">
+		var searchKeyword = "";
+		function getQueryString(name) {
+	    	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	        var r = window.location.search.substr(1).match(reg);
+	        if (r){
+				var obj=document.getElementById("name");
+                searchKeyword = decodeURI(r[2]);
+				obj.innerHTML = '"' + searchKeyword + '"的搜索结果';
+			}
+		}
+		$(function() {
+            getQueryString("search");
+        	//加载搜索结果
+			$.ajax({
+				type : 'get',
+				url : "search",
+				data: {keyword : searchKeyword},
+				dataType : 'json',
+				success : function(data) {
+					var select = $("#result");
+					str="";
+					for (var i = 0; i < data.length; i++) {
+						str+="<a id='company_name' href='info.html?graphId=" + data[i].graphId+"'>" + data[i].name + "</a>";
+						str+="<table class='table'><tbody><tr>";
+						str+="<td>公司类型：" + data[i].type + "</td>";
+						str+="<td>注册机关：" + data[i].reg_auth + "</td>";
+						str+="<td>统一社会信用代码：" + data[i].id + "</td>";
+						str+="</tr><tr><td>经营状态：" + data[i].state + "</td>";
+						str+="<td>成立日期：" + data[i].reg_date + "</td>";
+						str+='</tr></tbody></table><hr style="FILTER: alpha(opacity=100,finishopacity=0,style=3); width:100%; border-top:1px solid #cccccc"></hr>';
+						select.append(str);
+					}
+				}
+			});
+		});
+	</script>
+	
+</head>
+
+<body style="background: url(images/mountain.jpg); background-size: 100% 100%;">
+    <div class="jumbotron">
+        <div class="container">
+            <nav class="navbar navbar-default" style="background: rgba(0, 0, 0, 0.6); border: none">
+        		<div class="container-fluid">
+        			<div class="navbar-header" style="padding-top:12px">
+                        <img alt="Brand" src="images/person_white.png" style="length:30px; width:30px; padding-top:0px">
+                        <a style="color:#e6e6e6; margin-top:20px">Art@Code - 中软杯</a>
+        			</div>
+        		</div>
+        	</nav>
+            <div class="row" style="min-height:768px; background: #EDEDED; height:-webkit-fill-available; margin-left:0px; margin-right:0px; margin-top:-20px; padding-top:40px">
+				<h2 style="text-align: center;" id="name"></h2>
+				<div id="result" style="height: 100%; padding-top:50px; padding-left:100px; padding-right:100px"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,6 +1,7 @@
 package edu.scu.corpmap.controller;
 
 import edu.scu.corpmap.entity.mysql.HotCorp;
+import edu.scu.corpmap.entity.neo4j.Corp;
 import edu.scu.corpmap.result.BriefCorp;
 import edu.scu.corpmap.result.FuzzyHintCorp;
 import edu.scu.corpmap.service.CorpService;
@@ -30,7 +31,7 @@ public class CorpController {
      * @param keyword 用户输入
      * @return 输入提示列表
      */
-    @RequestMapping("/getHint")
+    @RequestMapping("/hint")
     @ResponseBody
     public List<FuzzyHintCorp> getHint(String keyword) {
         List<FuzzyHintCorp> list = corpService.getQueryHint(keyword);
@@ -42,7 +43,7 @@ public class CorpController {
      *
      * @return 搜索量最高的5家企业
      */
-    @RequestMapping("/getHotCorps")
+    @RequestMapping("/hot_corps")
     @ResponseBody
     public List<HotCorp> getHotCorps() {
         List<HotCorp> list = hotCorpService.getTop5HotCorp();
@@ -68,8 +69,7 @@ public class CorpController {
             BriefCorp briefCorp = corpService.queryBriefCorpById(keyword);
             list = new ArrayList<>();
             list.add(briefCorp);
-        }
-        else {
+        } else {
             // 关键词包含中文
             list = corpService.fuzzyQuery(keyword);
         }
@@ -79,5 +79,18 @@ public class CorpController {
             hotCorpService.plusOne(corp.getGraphId() + "", corp.getName());
 
         return list;
+    }
+
+    /**
+     * 根据节点ID查找企业
+     *
+     * @param graphId 节点ID
+     * @return 企业信息
+     */
+    @RequestMapping("/corp")
+    @ResponseBody
+    public Corp getCorp(Long graphId) {
+        Corp corp = corpService.queryCorpByGraphId(graphId);
+        return corp;
     }
 }

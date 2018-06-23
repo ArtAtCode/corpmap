@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>企业信息族谱分析-查询结果</title>
+	<link rel="stylesheet" href="assets/bootstrap/bootstrap.min.css">
+	<script src="assets/bootstrap/jquery.min.js"></script>
+	<script src="assets/bootstrap/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		var corpGraphId = "";
+		function getQueryString(name) {
+	    	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	        var r = window.location.search.substr(1).match(reg);
+	        if (r){
+                corpGraphId= decodeURI(r[2]);
+			}
+		}
+		$(function(){
+            getQueryString("graphId");
+            $.ajax({
+                type: "get",
+                url: "corp",
+                data: {graphId:corpGraphId},
+                dataType: "json",
+                success: function (data) {
+                    // TODO: 将返回的数据添加至页面
+                    console.log(data);
+                }
+            });
+		});
+	</script>
+	
+</head>
+
+<body style="background: url(images/mountain.jpg); background-size: 100% 100%;">
+    <div class="jumbotron" style="padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; background: rgba(255,255,255, 0.7)">
+        <div class="container" style="min-height:768px;">
+            <nav class="navbar navbar-default" style="background: rgba(0, 0, 0, 0.6); border: none">
+        		<div class="container-fluid">
+        			<div class="navbar-header" style="padding-top:12px">
+                        <img alt="Brand" src="images/person_white.png" style="length:30px; width:30px; padding-top:0px">
+                        <a style="color:#e6e6e6; margin-top:20px">Art@Code - 中软杯</a>
+        			</div>
+        		</div>
+        	</nav>
+            <div class="row" style="background: #EDEDED; height:-webkit-fill-available; margin-left:0px; margin-right:0px; margin-top:-20px; padding-top:40px">
+				<h2 style="text-align: center;" id="name"></h2>
+				<div id="result" style="padding-top:50px; padding-left:100px; padding-right:100px">
+				</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

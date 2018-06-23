@@ -1,0 +1,13 @@
+{
+	"nodes":[
+	{ "name": "马化腾"   , "image" : "../images/person_main.png", "other": "left" },
+	{ "name": "雷军"   , "image" : "../images/person.png" },
+	{ "name": "马云"   , "image" : "../images/person.png" },
+	{ "name": "李彦宏" , "image" : "../images/person.png" }
+	],
+	"edges":[
+	{ "source": 0 , "target": 1 , "relation":"股东" },
+	{ "source": 0 , "target": 2 , "relation":"员工+合伙人" },
+	{ "source": 0 , "target": 3 , "relation":"员工+合伙人" }
+	]
+}
