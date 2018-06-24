@@ -32,4 +32,13 @@ public class DirectController {
     public String test() {
         return "test";
     }
+
+    @RequestMapping("investment.html")
+    public String inverstment() { return "investment"; }
+
+    @RequestMapping("staff.html")
+    public String staff() { return "staff"; }
+
+    @RequestMapping("corp.html")
+    public String corp() { return "corp"; }
 }

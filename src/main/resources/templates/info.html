@@ -2,55 +2,343 @@
 <html>
 
 <head>
-	<meta charset="utf-8">
-	<title>企业信息族谱分析-查询结果</title>
-	<link rel="stylesheet" href="assets/bootstrap/bootstrap.min.css">
-	<script src="assets/bootstrap/jquery.min.js"></script>
-	<script src="assets/bootstrap/bootstrap.min.js"></script>
-	<script type="text/javascript">
-		var corpGraphId = "";
-		function getQueryString(name) {
-	    	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-	        var r = window.location.search.substr(1).match(reg);
-	        if (r){
-                corpGraphId= decodeURI(r[2]);
-			}
-		}
-		$(function(){
-            getQueryString("graphId");
+    <meta charset="utf-8">
+    <title>企业信息族谱分析-查询结果</title>
+    <link rel="stylesheet" href="assets/bootstrap/bootstrap.min.css">
+    <script src="assets/bootstrap/jquery.min.js"></script>
+    <script src="assets/bootstrap/bootstrap.min.js"></script>
+    <style type="text/css">
+        #content {
+            font-size: 15px;
+            border-width: 0;
+            background: rgba(255, 255, 255, 0.3);
+            margin-top: 25px;
+        }
+
+        #content:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .panel-default > .panel-heading {
+            margin-top: 60px;
+            font-size: 18px;
+        }
+
+        .table > tbody > tr > td {
+            padding-left: 10px;
+            padding-right: 10px;
+            font-size: 14px;
+        }
+
+        .table > thead > tr > th {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        #item {
+            font-weight: bold;
+        }
+    </style>
+
+    <script type="text/javascript">
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            var res = decodeURI(r[2]);
+            if (r){
+                var obj=document.getElementById("name");
+                obj.innerHTML = res;
+            }
+            return res;
+        }
+
+        $(function () {
+            var corpGraphId = getQueryString("graphId");
+            getQueryString("name");
             $.ajax({
                 type: "get",
                 url: "corp",
-                data: {graphId:corpGraphId},
+                data: {graphId: corpGraphId},
                 dataType: "json",
                 success: function (data) {
                     // TODO: 将返回的数据添加至页面
+                    // 基本信息
+                    $("#id").text(data.id); $("#basicInfoName").text(data.name);
+                    $('#type').text(data.type); $("#legal_person").text(data.legal_person);
+                    $('#reg_date').text(data.reg_date); $('#reg_auth').text(data.reg_auth);
+                    $('#checkDate').text(data.checkDate); $('#state').text(data.state);
+                    $('#address').text(data.address); $('#field').text(data.field);
+                    $('#startDate').text(data.startDate); $('#stopDate').text(data.stopDate);
+                    $('#reg_capt').text(data.reg_capt);
+
+                    // 股东信息
+                    $('#corpController').text(data.corpController);
+                    var shareholders = data.shareholders;
+                    var shareholder_template = $(".shareholder-template");
+                    for (var i = 0; i < shareholders.length; i++) {
+                        var sh = shareholders[i];
+                        var shareholder = shareholder_template.clone();
+                        shareholder.children(".sh_no").text(i+1);
+                        shareholder.children(".sh_name").text(sh.sh_name);
+                        shareholder.children(".sh_type").text(sh.sh_type);
+                        $('#shareholder-list').append(shareholder);
+                    }
+                    shareholder_template.remove();
+
+                    // 经营异常信息
+                    var irgs = data.irgOpts;
+                    var irg_template = $('.irg-template');
+                    for (var i = 0; i < irgs.length; i++) {
+                        var irgOpt = irgs[i];
+                        var irg = irg_template.clone();
+                        irg.children(".irgNo").text(i+1);
+                        irg.children(".irgReason").text(irgOpt.irgReason);
+                        irg.children(".irgDate").text(irgOpt.irgDate);
+                        irg.children(".deIrgReason").text(irgOpt.deIrgReason);
+                        irg.children(".deIrgDate").text(irgOpt.deIrgDate);
+                        irg.children(".deIrgAuth").text(irgOpt.deIrgAuth);
+                        $("#irg-list").append(irg);
+                    }
+                    irg_template.remove();
+
+                    // 变更信息
+                    var modis = data.modifications;
+                    var modi_template = $(".modification-template");
+                    for (var i = 0; i < modis.length; i++) {
+                        var m = modis[i];
+                        var modi = modi_template.clone();
+                        modi.children("#modiNo").text(i+1);
+                        modi.children("#title").text(m.title);
+                        modi.children("#priorContent").text(m.priorContent);
+                        modi.children("#laterContent").text(m.laterContent);
+                        modi.children("#date").text(m.date);
+                        $('#modi-list').append(modi);
+                    }
+                    modi_template.remove();
+
+                    // 添加链接
+                    $('#basic-a').attr("href", "info.html?graphId=" + data.graphId + "&name=" + data.name);
+                    $('#inverstment-a').attr("href", "investment.html?graphId=" + data.graphId + "&name=" + data.name);
+                    $('#staff-a').attr("href", "staff.html?graphId=" + data.graphId + "&name=" + data.name);
+                    $('#corp-a').attr("href", "corp.html?graphId=" + data.graphId + "&name=" + data.name);
+
                     console.log(data);
                 }
             });
-		});
-	</script>
-	
+        });
+    </script>
+
 </head>
 
 <body style="background: url(images/mountain.jpg); background-size: 100% 100%;">
-    <div class="jumbotron" style="padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; background: rgba(255,255,255, 0.7)">
-        <div class="container" style="min-height:768px;">
-            <nav class="navbar navbar-default" style="background: rgba(0, 0, 0, 0.6); border: none">
-        		<div class="container-fluid">
-        			<div class="navbar-header" style="padding-top:12px">
-                        <img alt="Brand" src="images/person_white.png" style="length:30px; width:30px; padding-top:0px">
-                        <a style="color:#e6e6e6; margin-top:20px">Art@Code - 中软杯</a>
-        			</div>
-        		</div>
-        	</nav>
-            <div class="row" style="background: #EDEDED; height:-webkit-fill-available; margin-left:0px; margin-right:0px; margin-top:-20px; padding-top:40px">
-				<h2 style="text-align: center;" id="name"></h2>
-				<div id="result" style="padding-top:50px; padding-left:100px; padding-right:100px">
-				</div>
+<div class="jumbotron"
+     style="height: 100%; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; background: rgba(255,255,255, 0.7)">
+    <div class="container" style="height: 100%; min-height:768px;">
+        <nav class="navbar navbar-default" style="background: rgba(0, 0, 0, 0.6); border: none">
+            <div class="container-fluid">
+                <div class="navbar-header" style="padding-top:12px">
+                    <img alt="Brand" src="images/person_white.png" style="length:30px; width:30px; padding-top:0px">
+                    <a style="color:#e6e6e6; margin-top:20px">Art@Code - 中软杯</a>
+                </div>
             </div>
+        </nav>
+        <div class="row"
+             style="background: #EDEDED; height:100%; margin-left:0px; margin-right:0px; margin-top:-20px; padding-top:40px">
+            <h2 style="text-align: center;" id="name"></h2>
+            <div class="btn-group btn-group-justified" role="group" style="margin-top:50px" aria-label="...">
+                <div class="btn-group" role="group">
+                    <a id="basic-a">
+                        <button type="button" id="content" class="btn btn-default active">基本信息</button>
+                    </a>
+                </div>
+                <div class="btn-group" role="group">
+                    <a id="inverstment-a">
+                        <button type="button" id="content" class="btn btn-default">投资族谱</button>
+                    </a>
+                </div>
+                <div class="btn-group" role="group">
+                    <a id="staff-a">
+                        <button type="button" id="content" class="btn btn-default">任职族谱</button>
+                    </a>
+                </div>
+                <div class="btn-group" role="group">
+                    <a id="corp-a">
+                        <button type="button" id="content" class="btn btn-default">企业族谱</button>
+                    </a>
+                </div>
+            </div>
+            <div id="info" style="padding-top:10px; padding-left:100px; padding-right:100px">
+                <div class="panel panel-default" style="background-color:rgba(0, 0, 0, 0)">
+                    <div class="panel-heading">基本信息</div>
+                    <!-- Table -->
+                    <table class="table" style="margin-top:30px;">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <b>统一社会信用代码：</b>
+                                <span id="id">914403002793320449</span>
+                            </td>
+                            <td>
+                                <b>企业名称</b>
+                                <span id="basicInfoName"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>类型：</b>
+                                <span id="type"></span>
+                            </td>
+                            <td>
+                                <b>法定代表人：</b>
+                                <span id="legal_person"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>注册资本：</b>
+                                <span id="reg_capt"></span>
+                            </td>
+                            <td>
+                                <b>成立日期： </b>
+                                <span id="reg_date"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>营业期限自：</b>
+                                <span id="startDate"></span>
+                            </td>
+                            <td>
+                                <b>营业期限至：</b>
+                                <span id="stopDate"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>登记机关： </b>
+                                <span id="reg_auth"></span>
+                            </td>
+                            <td>
+                                <b>核准日期： </b>
+                                <span id="checkDate"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>登记状态：</b>
+                                <span id="state"></span>
+                            </td>
+
+                            <td>
+                                <b>住所：</b>
+                                <span id="address"></span>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>经营范围： </b>
+                                <span id="field"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="panel-heading">股权结构</div>
+                    <div class="panel-body" style="padding-bottom:0px">
+                        <p style="padding-bottom:0px; font-size:15px">
+                            <b>企业控股人:</b>
+                            <b id="corpController"></b>
+                        </p>
+                    </div>
+                    <!-- Table -->
+                    <table class="table" style="margin-top:30px;">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>股东名称</th>
+                            <th>股东类型</th>
+                            <th>证照/证件类型</th>
+                            <th>证照/证件号码</th>
+                            <th>详情</th>
+                        </tr>
+                        </thead>
+                        <tbody id="shareholder-list">
+                        <tr class="shareholder-template">
+                            <td class="sh_no"></td>
+                            <td class="sh_name"></td>
+                            <td class="sh_type"></td>
+                            <td>非公示项</td>
+                            <td>非公示项</td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="panel-heading">经营异常</div>
+                    <!-- Table -->
+                    <table class="table" style="margin-top:30px;">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>列入经营异常名录原因</th>
+                            <th>列入日期</th>
+                            <th>作出决定机关(列入)</th>
+                            <th>移出经营异常名录原因</th>
+                            <th>移出日期</th>
+                            <th>作出决定机关(移出)</th>
+                            <th>移出日期</th>
+                        </tr>
+                        </thead>
+                        <tbody id="irg-list">
+                        <tr class="irg-template">
+                            <td class="irgNo"></td>
+                            <td class="irgReason"></td>
+                            <td class="irgDate"></td>
+                            <td class="deIrgReason">非公示项</td>
+                            <td class="deIrgDate">非公示项</td>
+                            <td class="deIrgAuth"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="panel-heading">变更信息</div>
+                    <!-- Table -->
+                    <table class="table" style="margin-top:30px;">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>变更事项</th>
+                            <th>变更前内容</th>
+                            <th>变更后内容</th>
+                            <th>变更时间</th>
+                        </tr>
+                        </thead>
+                        <tbody id="modi-list">
+                        <tr class=".modification-template">
+                            <td id="modiNo"></td>
+                            <td id="title"></td>
+                            <td id="priorContent"></td>
+                            <td id="laterContent"></td>
+                            <td id="date"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
         </div>
     </div>
+</div>
+</div>
 </body>
 
 </html>
+
+<!-- 
+第一栏是基础信息，就是你demo里做的，下面是是股权结构（一个列表），还有变更信息（列表），还有经营异常信息（列表）。
+第二栏是投资族谱，就是那张图，该公司的对外投资，可以控制层数（最大五层），
+第三栏是企业图谱，公司的对外对投资情况，被投资情况。可控制层数。（最大五层），
+第四栏目是任职人员在外情况。
+-->
