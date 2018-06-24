@@ -315,7 +315,7 @@ public class CorpService {
         String modifications = foundNode.getProperty("modification", "").toString();//节点里的异常信息是以字符串存的
         corp.setModifications(modifications);
         corp.setAddress(foundNode.getProperty("address","非公示项").toString());
-        corp.setCheckdate(foundNode.getProperty("checkdate","非公示项").toString());
+        corp.setCheckDate(foundNode.getProperty("checkdate","非公示项").toString());
         corp.setEng_name(foundNode.getProperties("Eng_name","非公示项").toString());
         corp.setField(foundNode.getProperty("field","非公示项").toString());
         corp.setId(foundNode.getProperty("id","非公示项").toString());
@@ -326,7 +326,12 @@ public class CorpService {
         corp.setState(foundNode.getProperty("state").toString());
         corp.setReg_auth(foundNode.getProperty("reg_auth","非公示项").toString());
         corp.setReg_date(foundNode.getProperty("reg_date","非公示项").toString());
-        corp.setType(foundNode.getProperty("type").toString());
+        corp.setType(foundNode.getProperty("type","").toString());
+        corp.setCheckDate(foundNode.getProperty("checkDate","").toString());
+        corp.setStartDate(foundNode.getProperty("startDate","").toString());
+        corp.setStopDate(foundNode.getProperty("stopDate","").toString());
+        corp.setReg_capt(foundNode.getProperty("reg_capt","").toString());
+
         corp.setCorpController(foundNode.getProperty("corpController","非公示项").toString());
     }
 
