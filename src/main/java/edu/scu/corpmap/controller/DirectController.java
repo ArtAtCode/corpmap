@@ -27,4 +27,9 @@ public class DirectController {
     public String relation() {
         return "relation";
     }
+
+    @RequestMapping("test.html")
+    public String test() {
+        return "test";
+    }
 }

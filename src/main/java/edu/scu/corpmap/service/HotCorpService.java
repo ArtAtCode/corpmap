@@ -25,17 +25,26 @@ public class HotCorpService {
     private HotCorpMapper hotCorpMapper;
 
     /**
-     * 返回热搜榜前5名
+     * 返回热搜榜前N名
+     * @param N
      * @return
      */
     @Transactional(readOnly = true)
-    public List<HotCorp> getTop5HotCorp() {
+    public List<HotCorp> getTopNHotCorp(int N) {
         HotCorpExample hotCorpExample = new HotCorpExample();
         hotCorpExample.setOrderByClause("count DESC");
         hotCorpExample.setOffset(0);
-        hotCorpExample.setLimit(5);
+        hotCorpExample.setLimit(N);
         List<HotCorp> list = hotCorpMapper.selectByExampleUsingLimit(hotCorpExample);
         return list;
+    }
+
+    /**
+     * @return 热搜榜前五名
+     */
+    @Transactional(readOnly = true)
+    public List<HotCorp> getTop5HotCorp() {
+        return getTopNHotCorp(5);
     }
 
     /**

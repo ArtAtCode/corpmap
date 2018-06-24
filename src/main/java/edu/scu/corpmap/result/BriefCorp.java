@@ -17,7 +17,7 @@ public class BriefCorp extends CorpResult{
         briefCorp.id = corp.getId();
         briefCorp.state = corp.getState();
         briefCorp.reg_date = corp.getReg_date();
-        briefCorp.name = briefCorp.getName();
+        briefCorp.name = corp.getName();
         return briefCorp;
     }
 
