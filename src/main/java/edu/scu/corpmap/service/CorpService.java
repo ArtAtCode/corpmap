@@ -281,11 +281,11 @@ public class CorpService {
             GraphNode graphNode = new GraphNode();
             graphNode.setId(node.getProperty("id","").toString());
             graphNode.setName(node.getProperty("name","").toString());
-            if (node.hasLabel(MyNodeLabel.人))  graphNode.setImage("..//images//person.png");
-            else graphNode.setImage("..//images//enterprise.png");
+            if (node.hasLabel(MyNodeLabel.人))  graphNode.setImage("/images/person.png");
+            else graphNode.setImage("/images/enterprise.png");
             graphNodeList.add(graphNode);
         }
-        graphNodeList.get(0).setImage("..//images//enterprise-main.png");
+        graphNodeList.get(0).setImage("/images/enterprise-main.png");
     }
 
     private void trvEdge(List<GraphEdge> graphEdgeList, Traverser traverser){
