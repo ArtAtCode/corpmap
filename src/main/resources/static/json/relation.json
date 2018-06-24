@@ -1,6 +1,6 @@
 {
 	"nodes":[
-	{ "name": "马化腾"   , "image" : "../images/person_main.png", "other": "left" },
+	{ "name": "马化腾"   , "image" : "../images/person_main.png"},
 	{ "name": "雷军"   , "image" : "../images/person.png" },
 	{ "name": "马云"   , "image" : "../images/person.png" },
 	{ "name": "李彦宏" , "image" : "../images/person.png" }

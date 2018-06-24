@@ -9,95 +9,6 @@
     <script src="assets/bootstrap/bootstrap.min.js"></script>
     <link rel="stylesheet" href="assets/bootstrap/bootstrap-select.min.css">
     <script src="assets/bootstrap/bootstrap-select.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            // 加载热搜榜，热搜榜的id为节点id
-            $.ajax({
-                type: 'get',
-                url: "hot_corps",
-                dataType: 'json',
-                success: function (data) {
-                    var hot_list_loc = $("#hot-list");
-                    var hot_corp_template = $("#hot-list-item-template");
-                    for (var i = 0; i < data.length; i++) {
-                        var hot_corp = hot_corp_template.clone().appendTo(hot_list_loc);
-                        hot_corp.attr("id", data[i].id);
-                        hot_corp.text(data[i].name);
-                    }
-                    hot_corp_template.remove();
-                }
-            });
-
-            // 加载搜索历史
-            var history_loc = $("#history");
-            var history = localStorage.getItem("history");
-            if (history == null) {
-                history = [];
-            }
-            else {
-                history = JSON.parse(history);
-            }
-            for (var i = history.length - 1; i >= 0; i--) {
-                history_loc.append("<option>" + history[i] + "</option>");
-            }
-
-            // 添加搜索历史
-            $("#search-btn").click(function(){
-                var push_flag = true; // 仅当搜索历史不存在该关键词才添加至历史
-
-                var keyword = $("#search").val();
-                var history = localStorage.getItem("history");
-
-                // 从本地存储中获取搜索历史
-                if (history == null) {
-                    history = [];
-                }
-                else {
-                    history = JSON.parse(history);
-                }
-
-                // 检查搜索历史中是否存在该关键词
-                for (var i = 0; i < history.length; i++) {
-                    if (keyword == history[i]) {
-                        push_flag = false;
-                    }
-                }
-
-                // 添加至搜索历史
-                if (push_flag && history.length >= 5) {
-                    history.shift();
-                    history.push(keyword);
-                }
-
-                // localStorage 存储类型仅能为字符串
-                localStorage.setItem("history", JSON.stringify(history));
-            });
-        });
-        $(function () {
-            // 获取输入提示
-            var input = $("#search");
-            var lastKeyword = "";
-            var history_loc = $("#history");
-            input.keyup(function () {
-                var curKeyword = input.val();
-                lastKeyword = curKeyword;
-                setTimeout(function () {
-                    if (lastKeyword == curKeyword && curKeyword != '') {
-                        $.ajax({
-                            type: 'get',
-                            url: "hint",
-                            dataType: 'json',
-                            data: {keyword: curKeyword},
-                            success: function (data) {
-                                // TODO: 将返回的数据添加至列表
-                                console.log(data);
-                            }
-                        });
-                    }
-                }, 500);
-            });
-        });
-    </script>
 </head>
 
 <body style="background: url(images/mountain.jpg); background-size: 100% 100%;">
@@ -133,21 +44,19 @@
                     <datalist id="history" style="background-color: rgba(255,255,255, 0.5)">
                     </datalist>
                 </form>
-                <div>
-                    <h4 id="hot-list" style="margin-top:30px; color: rgba(255,255,255, 0.8)">
-                        热搜榜：
-                        <!--热搜公司模板-->
-                        <span id='hot-list-item-template'
-                              class='label label-default'
-                              style='margin:5px 5px 5px 5px; color: rgba(255,255,255, 0.8)'
-                        ></span>
-                    </h4>
+                <div class="row">
+                    <h4 id="hot-list" class="col-md-3" style="margin-top:30px; color: rgba(255,255,255, 0.8)">热搜榜：</h4>
+                    <!--热搜公司模板-->
+                    <div id='hot-list-item-template'
+                         class='label label-default col-md-2'
+                         style='margin:30px 5px 10px 5px; color: rgba(255,255,255,0.8); text-overflow:ellipsis; overflow: hidden;'
+                    ></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+<script src="js/index.js"></script>
 </body>
 
 </html>

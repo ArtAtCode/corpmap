@@ -2,6 +2,7 @@ package edu.scu.corpmap.controller;
 
 import edu.scu.corpmap.entity.mysql.HotCorp;
 import edu.scu.corpmap.entity.neo4j.Corp;
+import edu.scu.corpmap.entity.neo4j.GraphElement.Graph;
 import edu.scu.corpmap.result.BriefCorp;
 import edu.scu.corpmap.result.FuzzyHintCorp;
 import edu.scu.corpmap.service.CorpService;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static edu.scu.corpmap.service.CorpService.*;
 
 /**
  * Created by Vicent_Chen on 2018/6/23.
@@ -46,7 +49,7 @@ public class CorpController {
     @RequestMapping("/hot_corps")
     @ResponseBody
     public List<HotCorp> getHotCorps() {
-        List<HotCorp> list = hotCorpService.getTop5HotCorp();
+        List<HotCorp> list = hotCorpService.getTopNHotCorp(3);
         return list;
     }
 
@@ -73,11 +76,6 @@ public class CorpController {
             // 关键词包含中文
             list = corpService.fuzzyQuery(keyword);
         }
-
-        // 查询后添加至热搜榜
-        for (BriefCorp corp : list)
-            hotCorpService.plusOne(corp.getGraphId() + "", corp.getName());
-
         return list;
     }
 
@@ -91,6 +89,22 @@ public class CorpController {
     @ResponseBody
     public Corp getCorp(Long graphId) {
         Corp corp = corpService.queryCorpByGraphId(graphId);
+        // 添加至热搜榜
+        if (corp != null)
+            hotCorpService.plusOne(graphId + "", corp.getName());
         return corp;
+    }
+
+    /**
+     * 返回用于构建图的对象
+     *
+     * @param graphId
+     * @return
+     */
+    @RequestMapping("/corpmap")
+    @ResponseBody
+    public Graph getCorpmap(Long graphId) {
+        Graph graph = corpService.constructGraph(graphId, REL_BOTH);
+        return graph;
     }
 }
