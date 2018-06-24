@@ -17,6 +17,15 @@ public class Corp {
     private long graph_id;//图中的id
     private String state;
     private String checkdate;
+    private String corpController;
+
+    public String getCorpController() {
+        return corpController;
+    }
+
+    public void setCorpController(String corpController) {
+        this.corpController = corpController;
+    }
 
     private List<Shareholder> shareholders; //  List类型会被映射为jsonarray
     private List<IrgOperation> irgOpts;//经营异常信息
