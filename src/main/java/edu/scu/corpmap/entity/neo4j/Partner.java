@@ -7,6 +7,10 @@ public class Partner {
     private String actual_subscription;
     private String method;
     private String partnerType;
+    private String subscp_date;
+    private String actual_subscp_date;
+    private long graphId;
+
 
     public String getPartner_name() {
         return partner_name;
@@ -16,9 +20,7 @@ public class Partner {
         this.partner_name = partner_name;
     }
 
-    private String subscp_date;
-    private String actual_subscp_date;
-    private long graphId;
+
 
     public long getGraphId() {
         return graphId;

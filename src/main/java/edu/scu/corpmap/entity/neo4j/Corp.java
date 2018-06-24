@@ -20,6 +20,12 @@ public class Corp {
     private String checkDate; //核准日期
     private String startDate;//营业期限自
     private String stopDate;//营业期限至
+    private String corpController;
+    private List<Shareholder> shareholders; //  List类型会被映射为jsonarray
+    private List<IrgOperation> irgOpts;//经营异常信息
+    private List<Partner> partners;//合伙人
+    private String modifications;//变更信息，存在节点中，是一个jsonarray的形式
+
 
     public String getStartDate() {
         return startDate;
@@ -46,7 +52,7 @@ public class Corp {
     }
 
 
-    private String corpController;
+
 
     public String getCorpController() {
         return corpController;
@@ -56,10 +62,7 @@ public class Corp {
         this.corpController = corpController;
     }
 
-    private List<Shareholder> shareholders; //  List类型会被映射为jsonarray
-    private List<IrgOperation> irgOpts;//经营异常信息
-    private List<Partner> partners;//合伙人
-    private String modifications;//变更信息，存在节点中，是一个jsonarray的形式
+
 
     public String getModifications() {
         return modifications;
