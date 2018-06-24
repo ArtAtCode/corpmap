@@ -96,15 +96,41 @@ public class CorpController {
     }
 
     /**
-     * 返回用于构建图的对象
+     * 返回企业族谱
      *
      * @param graphId
      * @return
      */
-    @RequestMapping("/corpmap")
+    @RequestMapping("/corp-map")
     @ResponseBody
     public Graph getCorpmap(Long graphId) {
         Graph graph = corpService.constructGraph(graphId, REL_BOTH);
+        return graph;
+    }
+
+    /**
+     * 返回投资族谱
+     *
+     * @param graphId
+     * @return
+     */
+    @RequestMapping("/inverst-map")
+    @ResponseBody
+    public Graph getInverstMap(Long graphId) {
+        Graph graph = corpService.constructGraph(graphId, INVESTMENT);
+        return graph;
+    }
+
+    /**
+     * 返回任职族谱
+     *
+     * @param graphId
+     * @return
+     */
+    @RequestMapping("/staff-map")
+    @ResponseBody
+    public Graph getStaffMap(Long graphId) {
+        Graph graph = corpService.constructGraph(graphId, STAFF);
         return graph;
     }
 }
