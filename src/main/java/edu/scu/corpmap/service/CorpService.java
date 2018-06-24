@@ -8,6 +8,7 @@ import edu.scu.corpmap.entity.neo4j.GraphElement.GraphNode;
 import edu.scu.corpmap.result.BriefCorp;
 import edu.scu.corpmap.result.FuzzyHintCorp;
 import edu.scu.corpmap.utils.IKAnalyzer5x;
+import edu.scu.corpmap.utils.Translator;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
@@ -172,6 +173,7 @@ public class CorpService {
             getPartnerStructure(partnerRelationships, partnerList);
             getIrgOpts(irgRelationships, irgOptList);
 
+
             corp.setShareholders(shareholderList);
             corp.setPartners(partnerList);
             corp.setIrgOpts(irgOptList);
@@ -214,6 +216,8 @@ public class CorpService {
                 getPartnerStructure(partnerRelationships, partnerList);
                 getIrgOpts(irgRelationships, irgOptList);
 
+                if(shareholderList.size()==0) corp.setShareholders(Translator.translate(partnerList));
+                else
                 corp.setShareholders(shareholderList);
                 corp.setPartners(partnerList);
                 corp.setIrgOpts(irgOptList);

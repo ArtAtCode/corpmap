@@ -23,7 +23,7 @@ spring:
 
 neo4j:
   # The absolute path of neo4j
-  embedded-path: F:/Neo4J/data/neo4jDatabases/database-41ff1e90-3b8a-4a56-947a-c20b0dac9924/installation-3.4.0/data/databases/corpmap.db
+  embedded-path: C:\Neo4j\data\databases\new3graph.db
 # Mybatis conf
 # TODO: change mybatis conf
 mybatis:
