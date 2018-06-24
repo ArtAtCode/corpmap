@@ -3,20 +3,49 @@ package edu.scu.corpmap.entity.neo4j;
 import java.util.List;
 
 public class Corp {
-    private String introduction;
+    private String introduction;//
     private String name;
     private String mail;
     private String Eng_name;
     private String address;
-    private String type;
+    private String type;//企业类型
     private String legal_person;  //法人或者（个体工商户的）经营者
-    private String reg_date;
-    private String reg_auth;
-    private String field;
+    private String reg_date;//注册日期
+    private String reg_auth;//注册机关
+    private String field;//经营范围
     private String id;//统一社会信用代码
-    private long graph_id;//图中的id
-    private String state;
-    private String checkdate;
+    private long graph_id;//图中的id（不显示)
+    private String state;//经营状态
+    private String reg_capt;//注册资本
+    private String checkDate; //核准日期
+    private String startDate;//营业期限自
+    private String stopDate;//营业期限至
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getStopDate() {
+        return stopDate;
+    }
+
+    public void setStopDate(String stopDate) {
+        this.stopDate = stopDate;
+    }
+
+    public String getReg_capt() {
+        return reg_capt;
+    }
+
+    public void setReg_capt(String reg_capt) {
+        this.reg_capt = reg_capt;
+    }
+
+
     private String corpController;
 
     public String getCorpController() {
@@ -143,12 +172,12 @@ public class Corp {
         this.state = state;
     }
 
-    public String getCheckdate() {
-        return checkdate;
+    public String getCheckDate() {
+        return checkDate;
     }
 
-    public void setCheckdate(String checkdate) {
-        this.checkdate = checkdate;
+    public void setCheckDate(String checkDate) {
+        this.checkDate = checkDate;
     }
 
 
