@@ -270,7 +270,7 @@ public class CorpService {
         return graph;
     }
 
-    public void trvNode(List<GraphNode> graphNodeList,Traverser traverser){
+    private void trvNode(List<GraphNode> graphNodeList,Traverser traverser){
         for(Node node:traverser.nodes()){
             GraphNode graphNode = new GraphNode();
             graphNode.setId(node.getProperty("id","").toString());
@@ -282,11 +282,15 @@ public class CorpService {
         graphNodeList.get(0).setImage("..//images//enterprise-main.png");
     }
 
-    public void trvEdge(List<GraphEdge> graphEdgeList,List<GraphNode> graphNodeList, Traverser traverser){
+    private void trvEdge(List<GraphEdge> graphEdgeList,List<GraphNode> graphNodeList, Traverser traverser){
         for(Relationship r:traverser.relationships()) {
             GraphEdge graphEdge = new GraphEdge();
-            graphEdge.setSource(graphNodeList.indexOf(r.getStartNode()));
-            graphEdge.setTarget(graphNodeList.indexOf(r.getEndNode()));
+            GraphNode sourceGraphNode = new GraphNode();
+            GraphNode targetGraphNode = new GraphNode();
+            sourceGraphNode.setId(r.getStartNode().getProperty("id","").toString());
+            targetGraphNode.setId(r.getEndNode().getProperty("id","").toString());
+            graphEdge.setSource(graphNodeList.indexOf(sourceGraphNode));//重写了GraphNode的equal方法
+            graphEdge.setTarget(graphNodeList.indexOf(targetGraphNode));
 
             graphEdge.setRelation(r.getType().name());
             try{
