@@ -1,14 +1,30 @@
 package edu.scu.corpmap.entity.neo4j.GraphElement;
 
 public  class GraphEdge {
-    private int source;
-    private int target;
+    private String source;
+    private String target;
     private String relation;
     private String subscription;
     private String actual_subscription;
     private String method;
     private String subscp_date;
     private String actual_subscp_date;
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
 
     public String getSubscription() {
         return subscription;
@@ -53,21 +69,7 @@ public  class GraphEdge {
         this.actual_subscp_date = actual_subscp_date;
     }
 
-    public int getSource() {
-        return source;
-    }
 
-    public void setSource(int source) {
-        this.source = source;
-    }
-
-    public int getTarget() {
-        return target;
-    }
-
-    public void setTarget(int target) {
-        this.target = target;
-    }
 
     public String getRelation() {
         return relation;

@@ -6,6 +6,7 @@ public  class GraphNode {
     private String id;//企业统一社会信用代码
 
 
+
     public String getId() {
         return id;
     }
