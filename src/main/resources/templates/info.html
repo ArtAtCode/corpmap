@@ -28,12 +28,14 @@
             padding-left: 10px;
             padding-right: 10px;
             font-size: 14px;
-           
+            max-width: 180px;
+
         }
 
         .table > thead > tr > th {
             padding-left: 10px;
             padding-right: 10px;
+            max-width: 180px;
 
         }
 
@@ -63,6 +65,8 @@
                 data: {graphId: corpGraphId},
                 dataType: "json",
                 success: function (data) {
+                    const format = (x) => (x == null || x == "" || x == "None") ? "未公开" : x;
+
                     // TODO: 将返回的数据添加至页面
                     // 基本信息
                     $("#id").text(data.id); $("#basicInfoName").text(data.name);
@@ -83,7 +87,13 @@
                         shareholder.children(".sh_no").text(i+1);
                         shareholder.children(".sh_name").text(sh.sh_name);
                         shareholder.children(".sh_type").text(sh.sh_type);
-                        $('#shareholder-list').append(shareholder);
+                        shareholder.children(".sh_id").text(sh.sh_id);
+                        shareholder.children(".sh_method").text(sh.method);
+                        shareholder.children(".sh_subscp_date").text(sh.subscp_date);
+                        shareholder.children(".sh_actual_subscp_date").text(sh.actual_subscp_date);
+                        shareholder.children(".sh_actual_subscirption").text(sh.actual_subscirption);
+                        shareholder.children(".sh_subscription").text(sh.subscription);
+                        $("#shareholder-list").append(shareholder);
                     }
                     shareholder_template.remove();
 
@@ -119,10 +129,10 @@
                     modi_template.remove();
 
                     // 添加链接
-                    $('#basic-a').attr("href", "info.html?graphId=" + data.graphId + "&name=" + data.name);
-                    $('#inverstment-a').attr("href", "investment.html?graphId=" + data.graphId + "&name=" + data.name);
-                    $('#staff-a').attr("href", "staff.html?graphId=" + data.graphId + "&name=" + data.name);
-                    $('#corp-a').attr("href", "corp.html?graphId=" + data.graphId + "&name=" + data.name);
+                    $('#basic-a').attr("href", "info.html?graphId=" + data.graph_id + "&name=" + data.name);
+                    $('#inverstment-a').attr("href", "investment.html?graphId=" + data.graph_id + "&name=" + data.name);
+                    $('#staff-a').attr("href", "staff.html?graphId=" + data.graph_id + "&name=" + data.name);
+                    $('#corp-a').attr("href", "corp.html?graphId=" + data.graph_id + "&name=" + data.name);
 
                     console.log(data);
                 }
@@ -178,7 +188,7 @@
                         <tr>
                             <td>
                                 <b>统一社会信用代码：</b>
-                                <span id="id">914403002793320449</span>
+                                <span id="id"></span>
                             </td>
                             <td>
                                 <b>企业名称</b>
@@ -260,9 +270,12 @@
                             <th>序号</th>
                             <th>股东名称</th>
                             <th>股东类型</th>
-                            <th>证照/证件类型</th>
-                            <th>证照/证件号码</th>
-                            <th>详情</th>
+                            <th>统一社会信用码</th>
+                            <th>认缴方式</th>
+                            <th>认缴日期</th>
+                            <th>实际认缴日期</th>
+                            <th>实际认缴金额</th>
+                            <th>认缴金额</th>
                         </tr>
                         </thead>
                         <tbody id="shareholder-list">
@@ -270,9 +283,12 @@
                             <td class="sh_no"></td>
                             <td class="sh_name"></td>
                             <td class="sh_type"></td>
-                            <td>非公示项</td>
-                            <td>非公示项</td>
-                            <td></td>
+                            <td class="sh_id"></td>
+                            <td class="sh_method"></td>
+                            <td class="sh_subscp_date"></td>
+                            <td class="sh_actual_subscp_date"></td>
+                            <td class="sh_actual_subscirption"></td>
+                            <td class="sh_subscription"></td>
                         </tr>
                         </tbody>
                     </table>

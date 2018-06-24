@@ -8,8 +8,8 @@ $.ajax({
         var hot_corp_template = $("#hot-list-item-template");
         for (var i = 0; i < data.length; i++) {
             var hot_corp = hot_corp_template.clone();
-            hot_corp.attr("id", data[i].id);
-            hot_corp.text(data[i].name);
+            hot_corp.children("div").text(data[i].name);
+            hot_corp.attr("href", "info.html?graphId="+data[i].id+"&name="+data[i].name)
             hot_list_loc.after(hot_corp);
         }
         hot_corp_template.remove();
