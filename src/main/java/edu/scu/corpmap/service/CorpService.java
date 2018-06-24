@@ -190,7 +190,7 @@ public class CorpService {
      * 根据统一社会信用码查询企业信息，可能返回一个空的corp
      *
      * @param id 统一社会信用码
-     * @return 企业信息
+     * @return 企业详细信息
      */
     @Transactional
     public Corp queryCorpById(String id) { //记得要先建立模式索引索引
@@ -267,7 +267,7 @@ public class CorpService {
             }
             Traverser traverser = traversalDescription.traverse(foundNode);
             trvNode(graphNodeList,traverser);
-            trvEdge(graphEdgeList,graphNodeList,traverser);
+            trvEdge(graphEdgeList,traverser);
 
             tx.success();
         }
@@ -276,7 +276,7 @@ public class CorpService {
         return graph;
     }
 
-    public void trvNode(List<GraphNode> graphNodeList,Traverser traverser){
+    private void trvNode(List<GraphNode> graphNodeList,Traverser traverser){
         for(Node node:traverser.nodes()){
             GraphNode graphNode = new GraphNode();
             graphNode.setId(node.getProperty("id","").toString());
@@ -288,11 +288,15 @@ public class CorpService {
         graphNodeList.get(0).setImage("..//images//enterprise-main.png");
     }
 
-    public void trvEdge(List<GraphEdge> graphEdgeList,List<GraphNode> graphNodeList, Traverser traverser){
+    private void trvEdge(List<GraphEdge> graphEdgeList, Traverser traverser){
         for(Relationship r:traverser.relationships()) {
             GraphEdge graphEdge = new GraphEdge();
-            graphEdge.setSource(graphNodeList.indexOf(r.getStartNode()));
-            graphEdge.setTarget(graphNodeList.indexOf(r.getEndNode()));
+//            GraphNode sourceGraphNode = new GraphNode();
+//            GraphNode targetGraphNode = new GraphNode();
+//            sourceGraphNode.setId(r.getStartNode().getProperty("id","").toString());
+//            targetGraphNode.setId(r.getEndNode().getProperty("id","").toString());
+            graphEdge.setSource(r.getStartNode().getProperty("name","").toString());//重写了GraphNode的equal方法
+            graphEdge.setTarget(r.getEndNode().getProperty("name","").toString());
 
             graphEdge.setRelation(r.getType().name());
             try{
@@ -329,6 +333,7 @@ public class CorpService {
         corp.setReg_auth(foundNode.getProperty("reg_auth","非公示项").toString());
         corp.setReg_date(foundNode.getProperty("reg_date","非公示项").toString());
         corp.setType(foundNode.getProperty("type").toString());
+        corp.setCorpController(foundNode.getProperty("corpController","非公示项").toString());
     }
 
     public void getStockStructure(Iterable<Relationship> stockRelationships, List shareholderList) {
