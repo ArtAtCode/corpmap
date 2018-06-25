@@ -80,6 +80,21 @@ public class CorpController {
     }
 
     /**
+     * 根据图节点id“模仿” search()
+     *
+     * @param graphId
+     * @return
+     */
+    @RequestMapping("/search-graphid")
+    @ResponseBody
+    public List<BriefCorp> searchGraphId(Long graphId) {
+        List<BriefCorp> list = new ArrayList<>();
+        BriefCorp briefCorp = corpService.queryBriefCorpByGraphId(graphId);
+        list.add(briefCorp);
+        return list;
+    }
+
+    /**
      * 根据节点ID查找企业
      *
      * @param graphId 节点ID
