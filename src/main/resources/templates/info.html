@@ -54,6 +54,7 @@
             return res;
         }
 
+        var shs = "";
         $(function () {
             var corpGraphId = getQueryString("graphId");
             getQueryString("name");
@@ -82,15 +83,10 @@
                     for (var i = 0; i < shareholders.length; i++) {
                         var sh = shareholders[i];
                         var shareholder = shareholder_template.clone();
-                        shareholder.children(".sh_no").text(i+1);
-                        shareholder.children(".sh_name").text(sh.sh_name);
-                        shareholder.children(".sh_type").text(sh.sh_type);
-                        shareholder.children(".sh_id").text(sh.sh_id);
-                        shareholder.children(".sh_method").text(sh.method);
-                        shareholder.children(".sh_subscp_date").text(sh.subscp_date);
-                        shareholder.children(".sh_actual_subscp_date").text(sh.actual_subscp_date);
-                        shareholder.children(".sh_actual_subscirption").text(sh.actual_subscirption);
-                        shareholder.children(".sh_subscription").text(sh.subscription);
+                        shareholder.children("#sh_no").text(i+1);
+                        shareholder.children("#sh_bf_name").text(sh.sh_name);
+                        shareholder.children("#sh_bf_type").text(sh.sh_type);
+						shareholder.find("a").attr("onclick", "showDetail("+i+")");
                         $("#shareholder-list").append(shareholder);
                     }
                     shareholder_template.remove();
@@ -132,10 +128,21 @@
                     $('#staff-a').attr("href", "staff.html?graphId=" + data.graph_id + "&name=" + data.name);
                     $('#corp-a').attr("href", "corp.html?graphId=" + data.graph_id + "&name=" + data.name);
 
+                    shs = data.shareholders;
                     console.log(data);
                 }
             });
         });
+        function showDetail(i) {
+            $("#sh_name").text(shs[i].sh_name)
+            $("#sh_type").text(shs[i].sh_type)
+            $("#sh_id").text(shs[i].sh_id)
+            $("#sh_method").text(shs[i].method)
+            $("#sh_subscp_date").text(shs[i].subscp_date)
+            $("#sh_actual_subscp_date").text(shs[i].actual_subscp_date)
+            $("#sh_actual_subscirption").text(shs[i].actual_subscirption)
+            $("#sh_subscription").text(shs[i].subscription)
+        }
     </script>
 
 </head>
@@ -265,28 +272,22 @@
                     <table class="table" style="margin-top:30px;">
                         <thead>
                         <tr>
-                            <th>序号</th>
-                            <th>股东名称</th>
-                            <th>股东类型</th>
-                            <th>统一社会信用码</th>
-                            <th>认缴方式</th>
-                            <th>认缴日期</th>
-                            <th>实际认缴日期</th>
-                            <th>实际认缴金额</th>
-                            <th>认缴金额</th>
+							<th>序号</th>
+							<th>股东名称</th>
+							<th>股东类型</th>
+							<th>证照/证件类型</th>
+							<th>证照/证件号码</th>
+							<th>详情</th>
                         </tr>
                         </thead>
                         <tbody id="shareholder-list">
                         <tr class="shareholder-template">
-                            <td class="sh_no"></td>
-                            <td class="sh_name"></td>
-                            <td class="sh_type"></td>
-                            <td class="sh_id"></td>
-                            <td class="sh_method"></td>
-                            <td class="sh_subscp_date"></td>
-                            <td class="sh_actual_subscp_date"></td>
-                            <td class="sh_actual_subscirption"></td>
-                            <td class="sh_subscription"></td>
+							<td id="sh_no"></td>
+							<td id="sh_bf_name"></td>
+							<td id="sh_bf_type"></td>
+							<td>非公示项 </td>
+							<td>非公示项 </td>
+							<td id="sh_datail"><a class="sh_detail_href" data-toggle='modal' data-target='#note'>查看详情</a></td>
                         </tr>
                         </tbody>
                     </table>
@@ -347,7 +348,79 @@
         </div>
     </div>
 </div>
+
+<!--详情模态框-->
+<div class="modal fade" id="note" tabindex="-1" role="dialog" aria-labelledby="login-title" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" id="login-title">查看详情</h4>
+			</div>
+			<form class="bs-example bs-example-form" role="form">
+				<div class="modal-body">
+					<!-- Table -->
+					<table class="table"  style="margin-top:30px;">
+						<tbody>
+						<tr>
+							<td>
+								<b>名称：</b>
+								<span id="sh_name"></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b>统一社会信用代码：</b>
+								<span id="sh_id"></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b>认缴方式：</b>
+								<span id="sh_method"></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b>认缴日期：</b>
+								<span id="sh_subscp_date"></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b>实际认缴日期：</b>
+								<span id="sh_actual_subscp_date"></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b>认缴金额： </b>
+								<span id="sh_subscription"></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b>实缴金额： </b>
+								<span id="sh_actual_subscirption"></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b>股东类型：</b>
+								<span id="sh_type"></span>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
+
 </body>
 
 </html>
