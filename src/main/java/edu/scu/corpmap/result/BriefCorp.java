@@ -12,6 +12,7 @@ public class BriefCorp extends CorpResult{
 
     public static BriefCorp constructFromCorp(Corp corp) {
         BriefCorp briefCorp = new BriefCorp();
+        briefCorp.setGraphId(corp.getGraph_id());
         briefCorp.type = corp.getType();
         briefCorp.reg_auth = corp.getReg_auth();
         briefCorp.id = corp.getId();

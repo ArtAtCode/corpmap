@@ -107,6 +107,7 @@ $("form").submit(function(e){
         if (keyword  == hints[i].corpName) {
             $("#search").after("<input name='graphId' value='" + hints[i].graphId + "' />");
             modify_flag = false;
+            break;
         }
     }
     if (modify_flag) {
