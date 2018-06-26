@@ -33,20 +33,28 @@
         function getQueryString(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
             var r = window.location.search.substr(1).match(reg);
+            var keyword = decodeURI(r[2]);
             if (r){
                 var obj=document.getElementById("name");
-                searchKeyword = decodeURI(r[2]);
-                obj.innerHTML = '"' + searchKeyword + '"的搜索结果';
+                obj.innerHTML = '"' + keyword + '"的搜索结果';
             }
+            return keyword;
         }
         $(function() {
-            getQueryString("search");
+            var graphId = getQueryString("graphId");
+            searchKeyword = getQueryString("search");
+            var searchURL = "search";
+            var searchData = {keyword: searchKeyword};
+            if (graphId != null && graphId != "") {
+                searchURL = "search-graphid";
+				searchData = {graphId: graphId};
+			}
             //加载搜索结果
             var corp_template = $("#corp-template");
             $.ajax({
                 type : 'get',
-                url : "search",
-                data: {keyword : searchKeyword},
+                url : searchURL,
+                data: searchData,
                 dataType : 'json',
                 success : function(data) {
                     var result = $("#result");

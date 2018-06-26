@@ -1,3 +1,5 @@
+var hints = [];
+
 // 加载热搜榜，热搜榜的id为节点id
 $.ajax({
     type: 'get',
@@ -61,6 +63,7 @@ $("#search").keyup(function () {
                     }
                     for(var i = 0; i < data.length; i++) {
                         hint_loc.append("<option>" + data[i].corpName + "</option>");
+                        hints.push(data[i]);
                     }
                 }
             });
@@ -69,7 +72,8 @@ $("#search").keyup(function () {
 });
 
 // 添加搜索历史
-$("#search-btn").click(function(){
+$("form").submit(function(e){
+
     var push_flag = true; // 仅当搜索历史不存在该关键词才添加至历史
 
     var keyword = $("#search").val();
@@ -98,6 +102,18 @@ $("#search-btn").click(function(){
         history.push(keyword);
     }
 
+    var modify_flag = true;
+    for (var i = 0; i < hints.length; i++) {
+        if (keyword  == hints[i].corpName) {
+            $("#search").after("<input name='graphId' value='" + hints[i].graphId + "' />");
+            modify_flag = false;
+        }
+    }
+    if (modify_flag) {
+        $("#search").after("<input name='graphId' value='' />");
+    }
+
     // localStorage 存储类型仅能为字符串
     localStorage.setItem("history", JSON.stringify(history));
+
 });
