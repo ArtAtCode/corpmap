@@ -232,76 +232,97 @@ public class CorpService {
     public Graph constructGraph(long graphId,int req){
         TraversalDescription traversalDescription;
         Graph graph = new Graph();
-        List<GraphNode> graphNodeList = new ArrayList<>();
+        GraphNode centerNode = new GraphNode();
+        List<GraphNode> graphNodeList = new ArrayList();
         List<GraphEdge> graphEdgeList = new ArrayList();
         try(Transaction tx = graphDatabaseService.beginTx()){
             Node foundNode ;
             try{
                  foundNode = graphDatabaseService.getNodeById(graphId);
             }catch(Exception e){
-                System.out.println("无法根据图id找到节点");
-                return graph;
+                return graph;//找不到
             }
-            //思路：先把所有的节点加进去(利用遍历器），再把所有的关系与节点匹配
-            if(req ==INVESTMENT){
-                 traversalDescription =
-                        graphDatabaseService.traversalDescription().
-                                relationships(MyRelationship.合伙人,Direction.BOTH)
-                                .relationships(MyRelationship.股东,Direction.BOTH)
-                                .breadthFirst()//广度优先
-                                .uniqueness(Uniqueness.NODE_GLOBAL)//所有节点仅被访问一次
-                                .evaluator(Evaluators.toDepth(5));//最大深度为5
-            }else if(req == STAFF){
-                 traversalDescription =
-                        graphDatabaseService.traversalDescription().
-                                relationships(MyRelationship.任职,Direction.BOTH)
-                                .breadthFirst()//广度优先
-                                .uniqueness(Uniqueness.NODE_GLOBAL)//所有节点仅被访问一次
-                                .evaluator(Evaluators.toDepth(5));//最大深度为5
+            centerNode.setImage("/images/enterprise-main.png");
+            centerNode.setLayer(1);//第一个节点返回给前端是标识为第一层
+            centerNode.setName(foundNode.getProperty("name","").toString());
+            centerNode.setId(foundNode.getProperty("id","").toString());
+            graphNodeList.add(centerNode);//把第一个节点，中央节点公司添加进去
 
-            }else{
-                 traversalDescription =
-                        graphDatabaseService.traversalDescription().
-                                relationships(MyRelationship.任职,Direction.BOTH).
-                                relationships(MyRelationship.合伙人,Direction.BOTH)
-                                .relationships(MyRelationship.股东,Direction.BOTH)
-                                .breadthFirst()//广度优先
-                                .uniqueness(Uniqueness.NODE_GLOBAL)//所有节点仅被访问一次
-                                .evaluator(Evaluators.toDepth(5));//最大深度为5
+            Traverser traverser;
+            for(int i=0;i<4;i++){
+
+                if(req ==INVESTMENT){
+                    traversalDescription =
+                            graphDatabaseService.traversalDescription().
+                                    relationships(MyRelationship.合伙人,Direction.BOTH)
+                                    .relationships(MyRelationship.股东,Direction.BOTH)
+                                    .breadthFirst()//广度优先
+                                    .uniqueness(Uniqueness.NODE_GLOBAL)//所有节点仅被访问一次
+                                    .evaluator(Evaluators.includingDepths(i,i+ 1));//中心节点为第0层,但是返回给前端是标识为第一层
+
+                }else if(req == STAFF){
+                    traversalDescription =
+                            graphDatabaseService.traversalDescription().
+                                    relationships(MyRelationship.任职,Direction.BOTH)
+                                    .breadthFirst()//广度优先
+                                    .uniqueness(Uniqueness.NODE_GLOBAL)//所有节点仅被访问一次
+                                    .evaluator(Evaluators.includingDepths(i,i+1));
+
+                }else{
+                    traversalDescription =
+                            graphDatabaseService.traversalDescription().
+                                    relationships(MyRelationship.任职,Direction.BOTH).
+                                    relationships(MyRelationship.合伙人,Direction.BOTH)
+                                    .relationships(MyRelationship.股东,Direction.BOTH)
+                                    .breadthFirst()//广度优先
+                                    .uniqueness(Uniqueness.NODE_GLOBAL)
+                                    .evaluator(Evaluators.includingDepths(i,i+1));
+                }
+                 traverser = traversalDescription.traverse(foundNode);
+                trvNodeAndEdge(graphNodeList,graphEdgeList,traverser,i+1);
+
             }
-            Traverser traverser = traversalDescription.traverse(foundNode);
-            trvNode(graphNodeList,traverser);
-            trvEdge(graphEdgeList,traverser);
-
+            graph.setNodes(graphNodeList);
+            graph.setEdges(graphEdgeList);
             tx.success();
         }
-        graph.setNodes(graphNodeList);
-        graph.setEdges(graphEdgeList);
+
         return graph;
     }
 
-    private void trvNode(List<GraphNode> graphNodeList,Traverser traverser){
-        for(Node node:traverser.nodes()){
-            GraphNode graphNode = new GraphNode();
-            graphNode.setId(node.getProperty("id","").toString());
-            graphNode.setName(node.getProperty("name","").toString());
-            if (node.hasLabel(MyNodeLabel.人))  graphNode.setImage("/images/person.png");
-            else graphNode.setImage("/images/enterprise.png");
-            graphNodeList.add(graphNode);
-        }
-        graphNodeList.get(0).setImage("/images/enterprise-main.png");
-    }
 
-    private void trvEdge(List<GraphEdge> graphEdgeList, Traverser traverser){
+
+    private void trvNodeAndEdge(List<GraphNode> graphNodeList,List<GraphEdge> graphEdgeList, Traverser traverser,int layer){
         for(Relationship r:traverser.relationships()) {
             GraphEdge graphEdge = new GraphEdge();
-//            GraphNode sourceGraphNode = new GraphNode();
-//            GraphNode targetGraphNode = new GraphNode();
-//            sourceGraphNode.setId(r.getStartNode().getProperty("id","").toString());
-//            targetGraphNode.setId(r.getEndNode().getProperty("id","").toString());
-            graphEdge.setSource(r.getStartNode().getProperty("name","").toString());//重写了GraphNode的equal方法
-            graphEdge.setTarget(r.getEndNode().getProperty("name","").toString());
+            boolean existEndNode = false;
+            boolean existStartNode = false;
+            Node startNode = r.getStartNode();
+            Node endNode = r.getEndNode(); //关系的结束节点，也就是要插入列表中的节点
+            String nodeName = startNode.getProperty("name","").toString();
+            String EndNodeName = endNode.getProperty("name","").toString();
+            for(GraphNode existNode: graphNodeList){
+                if(existNode.getName().equals(endNode.getProperty("name","").toString())&&
+                        existNode.getId().equals(endNode.getProperty("id","").toString())){
+                    existEndNode=true;
+                    continue;
+                }
+                if(existNode.getName().equals(startNode.getProperty("name","").toString())
+                        &&existNode.getId().equals(startNode.getProperty("id","").toString())){//！！！！这里不能用id比较，很多节点没有id
+                    existStartNode = true;
+                }
+            }
 
+            if(!existStartNode){
+                addNodeToList(startNode,graphNodeList,layer);
+
+            }
+            if(!existEndNode){
+                addNodeToList(endNode,graphNodeList,layer);
+            }
+            graphEdge.setSource(startNode.getProperty("name","").toString());
+            graphEdge.setTarget(endNode.getProperty("name","").toString());
+            graphEdge.setLayer(layer);//边从1-4
             graphEdge.setRelation(r.getType().name());
             try{
                 //如果有"position"属性，说明关系为任职关系，将relation由“任职”改为具体的职位名称，并且不再往下执行
@@ -319,6 +340,16 @@ public class CorpService {
 
             graphEdgeList.add(graphEdge);
         }
+    }
+    private void addNodeToList(Node node,List<GraphNode> graphNodeList,int layer){
+        GraphNode graphNode = new GraphNode();
+        graphNode.setName(node.getProperty("name","").toString());
+        graphNode.setLayer(layer+1);
+        graphNode.setId(node.getProperty("id","").toString());
+        if (node.hasLabel(MyNodeLabel.人))  graphNode.setImage("/images/person.png");
+        else graphNode.setImage("/images/enterprise.png");
+        graphNodeList.add(graphNode);
+
     }
 
     public void getBasicInfo(Corp corp, Node foundNode) {

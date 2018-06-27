@@ -2,12 +2,21 @@ package edu.scu.corpmap.service;
 
 import edu.scu.corpmap.entity.neo4j.*;
 import edu.scu.corpmap.entity.neo4j.GraphElement.Graph;
+import edu.scu.corpmap.entity.neo4j.GraphElement.GraphNode;
 import edu.scu.corpmap.result.BriefCorp;
 import edu.scu.corpmap.result.FuzzyHintCorp;
 import jdk.nashorn.internal.parser.JSONParser;
 import org.json.JSONArray;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.traversal.Evaluators;
+import org.neo4j.graphdb.traversal.TraversalDescription;
+import org.neo4j.graphdb.traversal.Traverser;
+import org.neo4j.graphdb.traversal.Uniqueness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -19,6 +28,8 @@ import java.util.List;
 public class CorpServiceTest {
     @Autowired
     private CorpService corpService;
+    @Autowired
+    GraphDatabaseService graphDatabaseService;
 
     @Test
     public void quickFuzzyQuery() {
@@ -33,7 +44,7 @@ public class CorpServiceTest {
 
     @Test
     public void fuzzyQuery() {
-        List<BriefCorp> list = corpService.fuzzyQuery("端州区家得宝置业服务部");
+        List<BriefCorp> list = corpService.fuzzyQuery("华为");
         for(int i=0;i<list.size();i++){
             System.out.println(list.get(i).getName());
             System.out.println(list.get(i).getGraphId());
@@ -84,6 +95,51 @@ public class CorpServiceTest {
             System.out.println(graph.getEdges().get(i).getSubscp_date());
 
         }
+    }
+    @Test
+    public void trvNodeTest(){
+
+        TraversalDescription traversalDescription ;
+        try(Transaction tx = graphDatabaseService.beginTx()){
+           Node foundNode = graphDatabaseService.getNodeById(0);
+//            traversalDescription =
+//                    graphDatabaseService.traversalDescription().
+//                            relationships(MyRelationship.合伙人,Direction.BOTH)
+//                            .relationships(MyRelationship.股东,Direction.BOTH)
+//                            .relationships(MyRelationship.任职,Direction.BOTH)
+//                            .breadthFirst()//广度优先
+//                            .uniqueness(Uniqueness.NONE)//所有节点仅被访问一次,节点编号是从0开始的
+//                            .evaluator(Evaluators.includingDepths(0,1));
+///** 两个todepth的结果是第二个不会遍历到，
+// * 两个atDepth的结果是一个都没有
+// *两个includingDepths的结果是一个都没有
+// *
+// * **/
+//            Traverser traverser = traversalDescription.traverse(foundNode);
+//            for(Node node:traverser.nodes()){
+//                System.out.println(node.getProperty("id","").toString());
+//                System.out.println(node.getProperty("name","").toString());
+//            }
+
+            traversalDescription =
+                    graphDatabaseService.traversalDescription().
+                            relationships(MyRelationship.合伙人,Direction.BOTH)
+                            .relationships(MyRelationship.股东,Direction.BOTH)
+                            .relationships(MyRelationship.任职,Direction.BOTH)
+                            .breadthFirst()//广度优先
+                            .uniqueness(Uniqueness.NODE_GLOBAL)//所有节点仅被访问一次,节点编号是从0开始的
+                            .evaluator(Evaluators.includingDepths(2,3));
+            Traverser traverser = traversalDescription.traverse(foundNode);
+            traverser = traversalDescription.traverse(foundNode);
+            for(Node node:traverser.nodes()){
+                System.out.println(node.getProperty("id","").toString());
+                System.out.println(node.getProperty("name","").toString());
+            }
+        }
+    }
+    @Test
+    public void contrustGraphTest(){
+        corpService.constructGraph(26,0);
     }
 
 }
