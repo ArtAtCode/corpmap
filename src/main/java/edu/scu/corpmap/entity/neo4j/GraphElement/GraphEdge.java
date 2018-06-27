@@ -9,6 +9,15 @@ public  class GraphEdge {
     private String method;
     private String subscp_date;
     private String actual_subscp_date;
+    private int layer;
+
+    public int getLayer() {
+        return layer;
+    }
+
+    public void setLayer(int layer) {
+        this.layer = layer;
+    }
 
     public String getSource() {
         return source;

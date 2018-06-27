@@ -55,7 +55,9 @@ public class TestController {
     @RequestMapping("fullMap")
     @ResponseBody
     public Graph fullMap(long id ){
-        return corpService.constructGraph(id,2);
+        return corpService.constructGraph(id,0);
     }
+
+
 
 }
