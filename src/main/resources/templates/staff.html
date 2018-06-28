@@ -109,32 +109,32 @@
                 <div class="panel panel-default" style="background-color:rgba(0, 0, 0, 0)">
                     <div class="panel-heading">任职族谱</div>
                     <div class="panel-body">
-                        <svg width="800" height="600"></svg>
+                        <div  style="text-align:right">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    显示层数<p id="curlayer" >5</p> <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a onclick="load_relation_graph(2)">2</a></li>
+                                    <li><a onclick="load_relation_graph(3)">3</a></li>
+                                    <li><a onclick="load_relation_graph(4)">4</a></li>
+                                    <li><a onclick="load_relation_graph(5)">5</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div>
+                            <svg width="1000" height="800">
+                            </svg>
+                        </div>
                     </div>
-
-
-
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 </body>
 <script>
-    var img_w = 67;
-    var img_h = 80;
-    var svg = d3.select("body").select("svg"),
-        width = +svg.attr("width"),
-        height = +svg.attr("height");
-
-    var color = d3.scaleOrdinal(d3.schemeCategory20);
-
-    var simulation = d3.forceSimulation()
-        .force("link", d3.forceLink().distance(270).strength(0.5))
-        .force("charge", d3.forceManyBody())
-        .force("center", d3.forceCenter(width / 2, height / 2));
-
     var graphId = getQueryString("graphId");
     var name = getQueryString("name");
 
@@ -144,230 +144,238 @@
     $('#staff-a').attr("href", "staff.html?graphId=" + graphId + "&name=" + name);
     $('#corp-a').attr("href", "corp.html?graphId=" + graphId + "&name=" + name);
 
-    d3.json("staff-map?graphId="+graphId, function(error, graph) {
-        if (error) throw error;
+    load_relation_graph(2);
 
-        var nodes = graph.nodes,
-            nodeById = d3.map(nodes, function(d) { return d.name; }),
-            links = graph.edges,
-            bilinks = [];
+    function load_relation_graph(num){
+        document.getElementById("curlayer").innerHTML = num; //更新显示层数的数字
+        d3.select("body").select("svg") //清空SVG中的内容
+            .selectAll('*')
+            .remove();
+        var max_layer = num;
+        var img_w = 47;
+        var img_h = 60;
+        var svg = d3.select("body").select("svg"),
+            width = +svg.attr("width"),
+            height = +svg.attr("height");
 
-        links.forEach(function(link) {
-            var s = link.source = nodeById.get(link.source),
-                t = link.target = nodeById.get(link.target),
-                r = link.relation,
-                linknum = 0,
-                text_pos = 0;
-            bilinks.push([s, t, r, linknum, text_pos, link.subscription, link.actual_subscription, link.method, link.subscp_date, link.actual_subscp_date]);
+        var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+        var simulation = d3.forceSimulation()
+            .force("link", d3.forceLink().distance(300).strength(0.3))
+            .force("charge", d3.forceManyBody())
+            .force("center", d3.forceCenter(width / 2, height / 4));
+
+//		d3.json("json/relation3.json", function(error, graph) {
+        d3.json("staff-map?graphId="+graphId, function(error, graph) {
+            if (error) throw error;
+
+            var jsonstr="[]";
+            var nodes = eval('('+jsonstr+')');  //显示的点
+            var curlinks = eval('('+jsonstr+')');  //显示的边
+
+            var initnodes = graph.nodes;
+            initnodes.forEach(function(node){
+                if(node.layer <= max_layer){
+                    nodes.push(node);
+                    console.log(node);
+                }
+            });
+
+            var nodeById = d3.map(initnodes, function(d) { return d.name; }),
+                links = graph.edges,
+                bilinks = [];
+
+
+            var linkGroup = {};
+            //对连接线进行统计和分组，不区分连接线的方向，只要属于同两个实体，即认为是同一组
+            var linkmap = {};
+
+
+            links.forEach(function(link) {
+                if(link.layer < max_layer){
+                    var s = link.source = nodeById.get(link.source),
+                        t = link.target = nodeById.get(link.target),
+                        r = link.relation,
+                        linknum = 0,
+                        text_pos = 0;
+                    var tmplink = [s, t, r, linknum, text_pos, link.subscription, link.actual_subscription, link.method, link.subscp_date, link.actual_subscp_date];
+                    var key = link.source.name < link.target.name ? link.source.name+':'+link.target.name: link.target.name+':'+link.source.name;
+                    bilinks.push(tmplink);
+                    if(!linkmap.hasOwnProperty(key)){
+                        linkmap[key] = 0;
+                        linkGroup[key]=[];
+                    }
+                    linkmap[key]++;
+                    linkGroup[key].push(tmplink);
+                    curlinks.push(link);
+                }
+            });
+
+            for(var i=0; i<links.length; i++){
+                if(links[i].layer >= max_layer) continue;
+                console.log(links[i].source, links[i].layer);
+                var key = links[i].source.name < links[i].target.name ? links[i].source.name+':'+links[i].target.name: links[i].target.name+':'+links[i].source.name;
+                links[i].size = linkmap[key];
+                //同一组的关系进行编号
+                var group = linkGroup[key];
+                //给节点分配编号
+                setLinkNumber(group);
+            }
+
+            function setLinkNumber(group){
+                if(group.length==0) return;
+                if(group.length==1){
+                    group[0][3] = 0;
+                    group[0][4] = 1 / 2;
+                    return;
+                }
+                var maxLinkNumber = group.length%2==0?group.length/2:(group.length-1)/2;
+
+                var startLinkNum = -maxLinkNumber;
+                for(var i = 0;i<group.length;i++){
+                    group[i][3] = startLinkNum++;
+                    group[i][4] = (i + 1) / (group.length + 1);
+                }
+            }
+
+
+            var R = 30;
+            var link = svg.selectAll(".link")
+                .data(bilinks)
+                .enter().append("path")
+                .attr("class", "link")
+                .attr("marker-end", "url(#arrow)" );//根据箭头标记的id号标记箭头
+
+            var edges_text = svg.selectAll(".linetext")
+                .data(bilinks)
+                .enter()
+                .append("text")
+                .attr("class","linetext")
+                .style("stroke","#1874CD")
+                .text(function(d){
+                    return d[2];
+                });
+
+            var node = svg.selectAll("image")
+                .data(nodes.filter(function(d) { return d.name; }))
+                .enter()
+                .append("image")
+                .attr("xlink:href",function(d){
+                    return d.image;
+                })
+                .attr("width",img_w)
+                .attr("height",img_h)
+                .attr("class", "node")
+                .attr("r", 5)
+                .call(d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended));
+
+            node.append("title")
+                .text(function(d) { return "企业统一社会信用代码：" + d.id; });
+
+
+            var nodes_text = svg.selectAll(".nodetext")
+                .data(nodes)
+                .enter()
+                .append("text")
+                .attr("class","nodetext")
+                .text(function(d){
+                    return d.name;
+                });
+
+            simulation
+                .nodes(nodes)
+                .on("tick", ticked);
+
+            simulation.force("link")
+                .links(curlinks);
+
+            function ticked() {
+                link.attr("d", positionLink);
+                node.attr("transform", positionNode);
+                edges_text.attr("x",binode_x);
+                edges_text.attr("y",binode_y);
+                nodes_text.attr("x",node_x);
+                nodes_text.attr("y",node_y);
+            }
+            /*
+              node.on("mouseover",function(d)
+                {
+
+                    var x =d3.event.pageX+45;
+                    var y =d3.event.pageY+45;
+                    //添加标签
+                    svg.append("text")
+                        .attr("id","tooltip")
+                        .attr("x",x)
+                        .attr("y",y)
+                        .attr("text-anchor","middle")
+                        .attr("font-family","sans-setif")
+                        .attr("font-size","11px")
+                        .attr("font-weight","bold")
+                        .attr("fill","black")
+                        //文本内容
+                        .text("投资额：100万元");
+
+                })
+                //鼠标移出时通过ID移除标签
+                .on("mouseout",function(d)
+                {
+                    d3.select("#tooltip").remove();
+                });    */
+
         });
 
-        var linkGroup = {};
-        //对连接线进行统计和分组，不区分连接线的方向，只要属于同两个实体，即认为是同一组
-        var linkmap = {};
-        for(var i=0; i<links.length; i++){
-            var key = links[i].source.name < links[i].target.name ? links[i].source.name+':'+links[i].target.name: links[i].target.name+':'+links[i].source.name;
-            console.log(key);
-            if(!linkmap.hasOwnProperty(key)){
-                linkmap[key] = 0;
-            }
-            linkmap[key]+=1;
-            if(!linkGroup.hasOwnProperty(key)){
-                linkGroup[key]=[];
-            }
-            linkGroup[key].push(bilinks[i]);
-            console.log(linkmap[key]);
+        function positionLink(d) {
+            var sx = d[0].x + 25 + d[3] * 8;
+            var sy = d[0].y + 50 + d[3] * 8;
+            var tx = d[1].x + 25 + d[3] * 8;
+            var ty = d[1].y + 50 + d[3] * 8;
+            return "M" + sx + "," + sy
+                + " " + tx + "," + ty;
         }
 
-        for(var i=0; i<links.length; i++){
-            var key = links[i].source.name < links[i].target.name ? links[i].source.name+':'+links[i].target.name: links[i].target.name+':'+links[i].source.name;
-            links[i].size = linkmap[key];
-            //同一组的关系进行编号
-            var group = linkGroup[key];
-            //给节点分配编号
-            setLinkNumber(group);
-            console.log(bilinks[i][4]);
+        function binode_x(d) {
+            var sx = d[0].x + 25 + d[3] * 8;
+            var tx = d[1].x + 25 + d[3] * 8;
+            return sx + (tx - sx) * d[4];
         }
 
-        function setLinkNumber(group){
-            if(group.length==0) return;
-            if(group.length==1){
-                group[0][3] = 0;
-                group[0][4] = 1 / 2;
-                return;
-            }
-            var maxLinkNumber = group.length%2==0?group.length/2:(group.length-1)/2;
-
-            var startLinkNum = -maxLinkNumber;
-            for(var i = 0;i<group.length;i++){
-                group[i][3] = startLinkNum++;
-                group[i][4] = (i + 1) / (group.length + 1);
-            }
+        function binode_y(d) {
+            var sy = d[0].y + 50 + d[3] * 8;
+            var ty = d[1].y + 50 + d[3] * 8;
+            return sy + (ty - sy) * d[4];
         }
 
-
-        var R = 30;
-        var link = svg.selectAll(".link")
-            .data(bilinks)
-            .enter().append("path")
-            .attr("class", "link")
-            .attr("marker-end", "url(#arrow)" );//根据箭头标记的id号标记箭头
-
-        var edges_text = svg.selectAll(".linetext")
-            .data(bilinks)
-            .enter()
-            .append("text")
-            .attr("class","linetext")
-            .style("stroke","#1874CD")
-            .text(function(d){
-                return d[2];
-            });
-
-        var node = svg.selectAll("image")
-            .data(nodes.filter(function(d) { return d.name; }))
-            .enter()
-            .append("image")
-            .attr("xlink:href",function(d){
-                return d.image;
-            })
-            .attr("width",img_w)
-            .attr("height",img_h)
-            .attr("class", "node")
-            .attr("r", 5)
-            //      .attr("fill", function(d) { return color(d.group); })
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
-
-        node.append("title")
-            .text(function(d) { return "企业统一社会信用代码：" + d.id; });
-
-        edges_text.append("title")
-            .text(function(d) { return "认缴金额：" + d[5] + "\n实际认缴金额：" + d[6] + "\n认缴方式：" + d[7] + "\n认缴日期：" + d[8] + "\n实际认缴日期：" + d[9]});
-
-        var nodes_text = svg.selectAll(".nodetext")
-            .data(nodes)
-            .enter()
-            .append("text")
-            .attr("class","nodetext")
-            .text(function(d){
-                return d.name;
-            });
-
-        simulation
-            .nodes(nodes)
-            .on("tick", ticked);
-
-        simulation.force("link")
-            .links(links);
-
-        function ticked() {
-            link.attr("d", positionLink);
-            node.attr("transform", positionNode);
-            edges_text.attr("x",binode_x);
-            edges_text.attr("y",binode_y);
-            nodes_text.attr("x",node_x);
-            nodes_text.attr("y",node_y);
+        function node_x(d) {
+            return d.x + 12;
         }
-        /*
-          node.on("mouseover",function(d)
-            {
 
-                var x =d3.event.pageX+45;
-                var y =d3.event.pageY+45;
-                //添加标签
-                svg.append("text")
-                    .attr("id","tooltip")
-                    .attr("x",x)
-                    .attr("y",y)
-                    .attr("text-anchor","middle")
-                    .attr("font-family","sans-setif")
-                    .attr("font-size","11px")
-                    .attr("font-weight","bold")
-                    .attr("fill","black")
-                    //文本内容
-                    .text("投资额：100万元");
+        function node_y(d) {
+            return d.y + 85;
+        }
 
-            })
-            //鼠标移出时通过ID移除标签
-            .on("mouseout",function(d)
-            {
-                d3.select("#tooltip").remove();
-            });    */
+        function positionNode(d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        }
 
-        var defs = svg.append("defs");
+        function dragstarted(d) {
+            if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x, d.fy = d.y;
+        }
 
-        var arrowMarker = defs.append("marker")
-            .attr("id","arrow")
-            .attr("markerUnits","strokeWidth")
-            .attr("markerWidth","8")
-            .attr("markerHeight","8")
-            .attr("viewBox","0 0 12 12")
-            .attr("refX","13")
-            .attr("refY","6")
-            .attr("orient","auto");
+        function dragged(d) {
+            d.fx = d3.event.x, d.fy = d3.event.y;
+        }
 
-        var arrow_path = "M2,2 L10,6 L2,10 L6,6 L2,2";
-
-        arrowMarker.append("path")
-            .attr("d",arrow_path)
-            .attr("fill","#999");
-    });
-
-    function positionLink(d) {
-        var sx = d[0].x + 35 + d[3] * 10;
-        var sy = d[0].y + 50 + d[3] * 10;
-        var tx = d[1].x + 35 + d[3] * 10;
-        var ty = d[1].y + 50 + d[3] * 10;
-        return "M" + sx + "," + sy
-            + " " + tx + "," + ty;
-    }
-
-    function binode_x(d) {
-        var sx = d[0].x + 35 + d[3] * 10;
-        var tx = d[1].x + 35 + d[3] * 10;
-        return sx + (tx - sx) * d[4];
-    }
-
-    function binode_y(d) {
-        var sy = d[0].y + 50 + d[3] * 10;
-        var ty = d[1].y + 50 + d[3] * 10;
-        return sy + (ty - sy) * d[4];
-    }
-
-    function node_x(d) {
-        return d.x + 12;
-    }
-
-    function node_y(d) {
-        return d.y + 85;
-    }
-
-    function positionNode(d) {
-        return "translate(" + d.x + "," + d.y + ")";
-    }
-
-    function dragstarted(d) {
-        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-        d.fx = d.x, d.fy = d.y;
-    }
-
-    function dragged(d) {
-        d.fx = d3.event.x, d.fy = d3.event.y;
-    }
-
-    function dragended(d) {
-        if (!d3.event.active) simulation.alphaTarget(0);
-        d.fx = null, d.fy = null;
+        function dragended(d) {
+            if (!d3.event.active) simulation.alphaTarget(0);
+            d.fx = null, d.fy = null;
+        }
     }
 
 
 </script>
 </html>
-
-<!--
-第一栏是基础信息，就是你demo里做的，下面是是股权结构（一个列表），还有变更信息（列表），还有经营异常信息（列表）。
-第二栏是投资族谱，就是那张图，该公司的对外投资，可以控制层数（最大五层），
-第三栏是企业图谱，公司的对外对投资情况，被投资情况。可控制层数。（最大五层），
-第四栏目是任职人员在外情况。
--->
