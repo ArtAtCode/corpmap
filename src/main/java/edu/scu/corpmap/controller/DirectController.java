@@ -2,6 +2,7 @@ package edu.scu.corpmap.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by Vicent_Chen on 2018/6/23.
@@ -41,4 +42,9 @@ public class DirectController {
 
     @RequestMapping("corp.html")
     public String corp() { return "corp"; }
+
+    @RequestMapping("about-us.html")
+    public String aboutus(){
+        return "about-us";
+    }
 }
