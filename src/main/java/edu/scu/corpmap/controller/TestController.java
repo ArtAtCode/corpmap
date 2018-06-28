@@ -1,6 +1,7 @@
 package edu.scu.corpmap.controller;
 
 
+import edu.scu.corpmap.entity.neo4j.Corp;
 import edu.scu.corpmap.entity.neo4j.GraphElement.Graph;
 import edu.scu.corpmap.result.BriefCorp;
 import edu.scu.corpmap.service.CorpService;
@@ -55,7 +56,12 @@ public class TestController {
     @RequestMapping("fullMap")
     @ResponseBody
     public Graph fullMap(long id ){
-        return corpService.constructGraph(id,0);
+        return corpService.constructGraph(id,1);
+    }
+    @RequestMapping("testC")
+    @ResponseBody
+    public Corp coprInfo(long graphId){
+        return corpService.queryCorpByGraphId(graphId);
     }
 
 
