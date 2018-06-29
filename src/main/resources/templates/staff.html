@@ -5,8 +5,9 @@
     <meta charset="utf-8">
     <title>企业信息族谱分析-查询结果</title>
     <link rel="stylesheet" href="assets/bootstrap/bootstrap.min.css">
-    <script src="assets/bootstrap/jquery.min.js"></script>
-    <script src="assets/bootstrap/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
     <style type="text/css">
         #content
         {
@@ -66,7 +67,7 @@
         }
 
     </style>
-    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://cdn.bootcss.com/d3/4.13.0/d3.min.js"></script>
 
 </head>
 
@@ -77,7 +78,7 @@
             <div class="container-fluid">
                 <div class="navbar-header" style="padding-top:12px">
                     <img alt="Brand" src="images/person_white.png" style="length:30px; width:30px; padding-top:0px">
-                    <a style="color:#e6e6e6; margin-top:20px">Art@Code - 中软杯</a>
+                    <a style="color:#e6e6e6; margin-top:20px"href="about-us.html">Art@Code - 中软杯</a>
                 </div>
             </div>
         </nav>
@@ -109,14 +110,27 @@
                 <div class="panel panel-default" style="background-color:rgba(0, 0, 0, 0)">
                     <div class="panel-heading">任职族谱</div>
                     <div class="panel-body">
-                        <svg width="800" height="600"></svg>
+                        <div  style="text-align:right">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    显示层数<p id="curlayer" >5</p> <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a onclick="load_relation_graph(2)">2</a></li>
+                                    <li><a onclick="load_relation_graph(3)">3</a></li>
+                                    <li><a onclick="load_relation_graph(4)">4</a></li>
+                                    <li><a onclick="load_relation_graph(5)">5</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div>
+                            <svg width="1000" height="800">
+                            </svg>
+                        </div>
                     </div>
-
-
-
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -124,6 +138,7 @@
 <script>
     var graphId = getQueryString("graphId");
     var name = getQueryString("name");
+
     // 添加链接
     $('#basic-a').attr("href", "info.html?graphId=" + graphId + "&name=" + name);
     $('#inverstment-a').attr("href", "investment.html?graphId=" + graphId + "&name=" + name);
@@ -152,18 +167,18 @@
             .force("center", d3.forceCenter(width / 2, height / 4));
 
 //		d3.json("json/relation3.json", function(error, graph) {
-        d3.json("inverst-map?graphId="+graphId, function(error, graph) {
+        d3.json("staff-map?graphId="+graphId, function(error, graph) {
             if (error) throw error;
+
             var jsonstr="[]";
             var nodes = eval('('+jsonstr+')');  //显示的点
             var curlinks = eval('('+jsonstr+')');  //显示的边
 
             var initnodes = graph.nodes;
             initnodes.forEach(function(node){
-
                 if(node.layer <= max_layer){
-                    console.log(node);
                     nodes.push(node);
+                    console.log(node);
                 }
             });
 
@@ -178,9 +193,7 @@
 
 
             links.forEach(function(link) {
-
                 if(link.layer < max_layer){
-                    console.log(link);
                     var s = link.source = nodeById.get(link.source),
                         t = link.target = nodeById.get(link.target),
                         r = link.relation,
@@ -201,6 +214,7 @@
 
             for(var i=0; i<links.length; i++){
                 if(links[i].layer >= max_layer) continue;
+                console.log(links[i].source, links[i].layer);
                 var key = links[i].source.name < links[i].target.name ? links[i].source.name+':'+links[i].target.name: links[i].target.name+':'+links[i].source.name;
                 links[i].size = linkmap[key];
                 //同一组的关系进行编号
@@ -254,7 +268,6 @@
                 .attr("height",img_h)
                 .attr("class", "node")
                 .attr("r", 5)
-                //      .attr("fill", function(d) { return color(d.group); })
                 .call(d3.drag()
                     .on("start", dragstarted)
                     .on("drag", dragged)
@@ -263,8 +276,6 @@
             node.append("title")
                 .text(function(d) { return "企业统一社会信用代码：" + d.id; });
 
-            edges_text.append("title")
-                .text(function(d) { return "认缴金额：" + d[5] + "\n实际认缴金额：" + d[6] + "\n认缴方式：" + d[7] + "\n认缴日期：" + d[8] + "\n实际认缴日期：" + d[9]});
 
             var nodes_text = svg.selectAll(".nodetext")
                 .data(nodes)
@@ -369,10 +380,3 @@
 
 </script>
 </html>
-
-<!--
-第一栏是基础信息，就是你demo里做的，下面是是股权结构（一个列表），还有变更信息（列表），还有经营异常信息（列表）。
-第二栏是投资族谱，就是那张图，该公司的对外投资，可以控制层数（最大五层），
-第三栏是企业图谱，公司的对外对投资情况，被投资情况。可控制层数。（最大五层），
-第四栏目是任职人员在外情况。
--->

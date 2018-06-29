@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <title>企业信息族谱分析-查询结果</title>
     <link rel="stylesheet" href="assets/bootstrap/bootstrap.min.css">
-    <script src="assets/bootstrap/jquery.min.js"></script>
-    <script src="assets/bootstrap/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <style type="text/css">
         #content {
             font-size: 15px;
@@ -88,7 +88,7 @@
                         shareholder.children("#sh_no").text(i+1);
                         shareholder.children("#sh_bf_name").text(sh.sh_name);
                         shareholder.children("#sh_bf_type").text(sh.sh_type);
-						shareholder.find("a").attr("onclick", "showDetail("+i+")");
+                        shareholder.find("a").attr("onclick", "showDetail("+i+")");
                         $("#shareholder-list").append(shareholder);
                     }
                     shareholder_template.remove();
@@ -160,7 +160,7 @@
             <div class="container-fluid">
                 <div class="navbar-header" style="padding-top:12px">
                     <img alt="Brand" src="images/person_white.png" style="length:30px; width:30px; padding-top:0px">
-                    <a style="color:#e6e6e6; margin-top:20px">Art@Code - 中软杯</a>
+                    <a style="color:#e6e6e6; margin-top:20px"href="about-us.html">Art@Code - 中软杯</a>
                 </div>
             </div>
         </nav>
@@ -277,22 +277,22 @@
                     <table class="table" style="margin-top:30px;">
                         <thead>
                         <tr>
-							<th>序号</th>
-							<th>股东名称</th>
-							<th>股东类型</th>
-							<th>证照/证件类型</th>
-							<th>证照/证件号码</th>
-							<th>详情</th>
+                            <th>序号</th>
+                            <th>股东名称</th>
+                            <th>股东类型</th>
+                            <th>证照/证件类型</th>
+                            <th>证照/证件号码</th>
+                            <th>详情</th>
                         </tr>
                         </thead>
                         <tbody id="shareholder-list">
                         <tr class="shareholder-template">
-							<td id="sh_no"></td>
-							<td id="sh_bf_name"></td>
-							<td id="sh_bf_type"></td>
-							<td>非公示项 </td>
-							<td>非公示项 </td>
-							<td id="sh_datail"><a class="sh_detail_href" data-toggle='modal' data-target='#note'>查看详情</a></td>
+                            <td id="sh_no"></td>
+                            <td id="sh_bf_name"></td>
+                            <td id="sh_bf_type"></td>
+                            <td>非公示项 </td>
+                            <td>非公示项 </td>
+                            <td id="sh_datail"><a class="sh_detail_href" data-toggle='modal' data-target='#note'>查看详情</a></td>
                         </tr>
                         </tbody>
                     </table>
@@ -356,81 +356,81 @@
 
 <!--详情模态框-->
 <div class="modal fade" id="note" tabindex="-1" role="dialog" aria-labelledby="login-title" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h4 class="modal-title" id="login-title">查看详情</h4>
-			</div>
-			<form class="bs-example bs-example-form" role="form">
-				<div class="modal-body">
-					<!-- Table -->
-					<table class="table"  style="margin-top:30px;">
-						<tbody>
-						<tr>
-							<td>
-								<b>名称：</b>
-								<span id="sh_name"></span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<b>统一社会信用代码：</b>
-								<span id="sh_id"></span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<b>认缴方式：</b>
-								<span id="sh_method"></span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<b>认缴日期：</b>
-								<span id="sh_subscp_date"></span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<b>实际认缴日期：</b>
-								<span id="sh_actual_subscp_date"></span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<b>认缴金额： </b>
-								<span id="sh_subscription"></span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<b>实缴金额： </b>
-								<span id="sh_actual_subscirption"></span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<b>股东类型：</b>
-								<span id="sh_type"></span>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-				<div class="modal-footer">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="login-title">查看详情</h4>
+            </div>
+            <form class="bs-example bs-example-form" role="form">
+                <div class="modal-body">
+                    <!-- Table -->
+                    <table class="table"  style="margin-top:30px;">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <b>名称：</b>
+                                <span id="sh_name"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>统一社会信用代码：</b>
+                                <span id="sh_id"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>认缴方式：</b>
+                                <span id="sh_method"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>认缴日期：</b>
+                                <span id="sh_subscp_date"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>实际认缴日期：</b>
+                                <span id="sh_actual_subscp_date"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>认缴金额： </b>
+                                <span id="sh_subscription"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>实缴金额： </b>
+                                <span id="sh_actual_subscirption"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>股东类型：</b>
+                                <span id="sh_type"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
 
-				</div>
-			</form>
-		</div>
-	</div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 </body>
 
 </html>
 
-<!-- 
+<!--
 第一栏是基础信息，就是你demo里做的，下面是是股权结构（一个列表），还有变更信息（列表），还有经营异常信息（列表）。
 第二栏是投资族谱，就是那张图，该公司的对外投资，可以控制层数（最大五层），
 第三栏是企业图谱，公司的对外对投资情况，被投资情况。可控制层数。（最大五层），

@@ -139,7 +139,7 @@ public class CorpServiceTest {
     }
     @Test
     public void contrustGraphTest(){
-        corpService.constructGraph(26,0);
+        corpService.constructGraph(205,0);
     }
 
 }

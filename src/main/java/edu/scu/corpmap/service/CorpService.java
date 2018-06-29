@@ -257,7 +257,9 @@ public class CorpService {
                                     relationships(MyRelationship.合伙人,Direction.BOTH)
                                     .relationships(MyRelationship.股东,Direction.BOTH)
                                     .breadthFirst()//广度优先
-                                    .uniqueness(Uniqueness.NODE_GLOBAL)//所有节点仅被访问一次
+
+                                    .uniqueness(Uniqueness.NODE_LEVEL)//所有节点仅被访问一次
+                                    .uniqueness(Uniqueness.RELATIONSHIP_LEVEL )
                                     .evaluator(Evaluators.includingDepths(i,i+ 1));//中心节点为第0层,但是返回给前端是标识为第一层
 
                 }else if(req == STAFF){
@@ -265,8 +267,12 @@ public class CorpService {
                             graphDatabaseService.traversalDescription().
                                     relationships(MyRelationship.任职,Direction.BOTH)
                                     .breadthFirst()//广度优先
-                                    .uniqueness(Uniqueness.NODE_GLOBAL)//所有节点仅被访问一次
-                                    .evaluator(Evaluators.includingDepths(i,i+1));
+//                                    .uniqueness(Uniqueness.NODE_LEVEL)//所有节点仅被访问一次
+                                    .uniqueness(Uniqueness.RELATIONSHIP_LEVEL )
+                                    .uniqueness(Uniqueness.NODE_LEVEL)
+                                    .evaluator(Evaluators.fromDepth(i))
+                                    .evaluator(Evaluators.toDepth(i+1));
+
 
                 }else{
                     traversalDescription =
@@ -275,7 +281,8 @@ public class CorpService {
                                     relationships(MyRelationship.合伙人,Direction.BOTH)
                                     .relationships(MyRelationship.股东,Direction.BOTH)
                                     .breadthFirst()//广度优先
-                                    .uniqueness(Uniqueness.NODE_GLOBAL)
+                                    .uniqueness(Uniqueness.RELATIONSHIP_LEVEL)
+                                    .uniqueness(Uniqueness.NODE_LEVEL)
                                     .evaluator(Evaluators.includingDepths(i,i+1));
                 }
                  traverser = traversalDescription.traverse(foundNode);
@@ -297,10 +304,11 @@ public class CorpService {
             GraphEdge graphEdge = new GraphEdge();
             boolean existEndNode = false;
             boolean existStartNode = false;
+            boolean existRel = false;
             Node startNode = r.getStartNode();
             Node endNode = r.getEndNode(); //关系的结束节点，也就是要插入列表中的节点
-            String nodeName = startNode.getProperty("name","").toString();
-            String EndNodeName = endNode.getProperty("name","").toString();
+//            String nodeName = startNode.getProperty("name","").toString();
+//            String EndNodeName = endNode.getProperty("name","").toString();
             for(GraphNode existNode: graphNodeList){
                 if(existNode.getName().equals(endNode.getProperty("name","").toString())&&
                         existNode.getId().equals(endNode.getProperty("id","").toString())){
@@ -324,6 +332,15 @@ public class CorpService {
             graphEdge.setTarget(endNode.getProperty("name","").toString());
             graphEdge.setLayer(layer);//边从1-4
             graphEdge.setRelation(r.getType().name());
+
+            for(GraphEdge existEdge:graphEdgeList){
+                if(existEdge.getSource().equals(graphEdge.getSource())&& existEdge.getTarget().equals(graphEdge.getTarget())){
+                    existRel = true;
+                    break;
+                }
+            }
+            if(existRel) continue;
+
             try{
                 //如果有"position"属性，说明关系为任职关系，将relation由“任职”改为具体的职位名称，并且不再往下执行
                 graphEdge.setRelation(r.getProperty("position").toString());
@@ -332,6 +349,7 @@ public class CorpService {
             }catch(Exception e){
 
             }
+
             graphEdge.setActual_subscp_date(r.getProperty("actual_subscp_date","").toString());
             graphEdge.setActual_subscription(r.getProperty("actual_subscription","").toString());
             graphEdge.setSubscription(r.getProperty("subscription","").toString());
@@ -415,11 +433,11 @@ public class CorpService {
             IrgOperation irgOpt = new IrgOperation();
             Node endNode = r.getEndNode();
             irgOpt.setIrgReason(endNode.getProperty("irgReason", "").toString());
-            irgOpt.setDeIrgAuth(endNode.getProperty("deIrgAuth", "").toString());
-            irgOpt.setIrgAuth(endNode.getProperty("irgAuth", "").toString());
-            irgOpt.setIrgDate(endNode.getProperty("irgDate", "").toString());
-            irgOpt.setDeIrgDate(endNode.getProperty("deIrgDate", "").toString());
-            irgOpt.setDeIrgReason(endNode.getProperty("deIrgReason", "").toString());
+            irgOpt.setDeIrgAuth(r.getProperty("deIrgAuth", "").toString());
+            irgOpt.setIrgAuth(r.getProperty("irgAuth", "").toString());
+            irgOpt.setIrgDate(r.getProperty("irgDate", "").toString());
+            irgOpt.setDeIrgDate(r.getProperty("deIrgDate", "").toString());
+            irgOpt.setDeIrgReason(r.getProperty("deIrgReason", "").toString());
             irgOptList.add(irgOpt);
         }
     }
