@@ -59,6 +59,13 @@
 			<artifactId>neo4j</artifactId>
 			<version>3.4.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.neo4j/neo4j-primitive-collections -->
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-primitive-collections</artifactId>
+			<version>3.4.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

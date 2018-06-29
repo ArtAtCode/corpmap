@@ -1,0 +1,31 @@
+server:
+  port: 8089
+  servlet:
+    path: /
+
+spring:
+  jackson:
+    # get correct time
+    time-zone: GMT+8
+  datasource:
+    url: jdbc:mysql://120.77.212.58:3306/corpmap?characterEncoding=utf8
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    tomcat:
+      max-wait: 10000
+      max-active: 30
+    hikari:
+      connection-timeout: 30000
+      idle-timeout: 600000
+      maximum-pool-size: 15
+      max-lifetime: 1800000
+
+neo4j:
+  # The absolute path of neo4j
+  embedded-path: F:/Neo4J/data/neo4jDatabases/database-41ff1e90-3b8a-4a56-947a-c20b0dac9924/installation-3.4.0/data/databases/corpmap.db
+# Mybatis conf
+# TODO: change mybatis conf
+mybatis:
+  mapperlocations: /mapper/**Mapper.xml
+  type-aliases-package: edu.scu.corpmap.entity.mysql
