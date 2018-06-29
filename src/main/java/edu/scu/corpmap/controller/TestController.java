@@ -29,7 +29,7 @@ public class TestController {
 
     // RequestMapping 注解：标记为RequestMapping的方法能够接收特定的HTTP请求
     // 如这一方法接收 http://localhost:8080/
-    @RequestMapping("/")
+    @RequestMapping("/hello")
     // ResponseBody 注解：返回对象本身，除基础数据类型(int,float,String等)均返回JSON格式对象
     @ResponseBody
     public String Hello() {
