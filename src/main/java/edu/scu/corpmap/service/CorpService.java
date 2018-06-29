@@ -390,7 +390,7 @@ public class CorpService {
         corp.setStartDate(foundNode.getProperty("startDate","").toString());
         corp.setStopDate(foundNode.getProperty("stopDate","").toString());
         corp.setReg_capt(foundNode.getProperty("reg_capt","").toString());
-
+        corp.setGraph_id(foundNode.getId());
         corp.setCorpController(foundNode.getProperty("corpController","非公示项").toString());
     }
 
