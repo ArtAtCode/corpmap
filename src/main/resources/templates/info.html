@@ -110,16 +110,19 @@
                     irg_template.remove();
 
                     // 变更信息
-                    var modis = data.modifications;
+                    var modis = JSON.parse(data.modifications);
                     var modi_template = $(".modification-template");
+                    console.log("--------------")
+                    console.log(modis);
+                    console.log(modis.length);
                     for (var i = 0; i < modis.length; i++) {
                         var m = modis[i];
                         var modi = modi_template.clone();
                         modi.children("#modiNo").text(i+1);
-                        modi.children("#title").text(m.title);
-                        modi.children("#priorContent").text(m.priorContent);
-                        modi.children("#laterContent").text(m.laterContent);
-                        modi.children("#date").text(m.date);
+                        modi.children("#title").text(m.变更事项);
+                        modi.children("#priorContent").text(m.变更前内容);
+                        modi.children("#laterContent").text(m.变更后内容);
+                        modi.children("#date").text(m.变更时间);
                         $('#modi-list').append(modi);
                     }
                     modi_template.remove();
@@ -334,7 +337,7 @@
                         </tr>
                         </thead>
                         <tbody id="modi-list">
-                        <tr class=".modification-template">
+                        <tr class="modification-template">
                             <td id="modiNo"></td>
                             <td id="title"></td>
                             <td id="priorContent"></td>
