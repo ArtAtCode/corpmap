@@ -97,6 +97,7 @@ public class CorpService {
                     briefCorp.setReg_auth(node.getProperty("reg_auth").toString());
                     briefCorp.setReg_date(node.getProperty("reg_date").toString());
                     briefCorp.setId(node.getProperty("id").toString());
+                    briefCorp.setState(node.getProperty("state","在营").toString());
                 } catch (NotFoundException e) {
                     continue; //有的企业为边缘节点，即，只有名字，没有其他信息
                 }

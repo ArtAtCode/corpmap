@@ -1,57 +1,57 @@
 Manifest-Version: 1.0
-Class-Path: mysql-connector-java-5.1.46.jar neo4j-cypher-expression-3.
- 4-3.4.0.jar mybatis-spring-boot-autoconfigure-1.3.2.jar spring-boot-s
- tarter-logging-2.0.2.RELEASE.jar asm-6.0.jar classmate-1.3.4.jar scal
- a-reflect-2.11.12.jar validation-api-2.0.1.Final.jar neo4j-cypher-ir-
- 3.4-3.4.0.jar neo4j-codegen-3.4.0.jar neo4j-cypher-planner-3.4-3.4.0.
- jar neo4j-cypher-compiler-3.1-3.1.8.jar neo4j-3.4.0.jar neo4j-cypher-
- frontend-3.1-3.1.8.jar spring-boot-starter-jdbc-2.0.2.RELEASE.jar spr
- ing-boot-starter-json-2.0.2.RELEASE.jar neo4j-cypher-ir-3.3-3.3.5.jar
-  neo4j-cypher-3.4.0.jar spring-boot-starter-2.0.2.RELEASE.jar neo4j-i
- ndex-3.4.0.jar neo4j-lucene-upgrade-3.4.0.jar aspectjweaver-1.8.13.ja
- r commons-lang3-3.7.jar spring-beans-5.0.6.RELEASE.jar jackson-annota
- tions-2.9.0.jar neo4j-cypher-compiler-3.3-3.3.5.jar neo4j-graph-match
- ing-3.1.6.jar jackson-datatype-jdk8-2.9.5.jar lucene-core-5.5.5.jar n
- eo4j-cypher-planner-spi-3.4-3.4.0.jar asm-tree-6.0.jar neo4j-io-3.4.0
- .jar neo4j-dbms-3.4.0.jar neo4j-kernel-api-3.4.0.jar spring-boot-star
- ter-thymeleaf-2.0.2.RELEASE.jar neo4j-cypher-compiler-2.3-2.3.12.jar 
- mybatis-spring-boot-starter-1.3.2.jar jProcesses-1.6.4.jar neo4j-csv-
- 3.4.0.jar lucene-backward-codecs-5.5.0.jar spring-expression-5.0.6.RE
- LEASE.jar tomcat-embed-websocket-8.5.31.jar neo4j-unsafe-3.4.0.jar ju
- l-to-slf4j-1.7.25.jar neo4j-import-tool-3.4.0.jar neo4j-cypher-logica
- l-plans-3.4-3.4.0.jar HikariCP-2.7.9.jar thymeleaf-spring5-3.0.9.RELE
- ASE.jar neo4j-procedure-api-3.4.0.jar thymeleaf-extras-java8time-3.0.
- 1.RELEASE.jar logback-classic-1.2.3.jar bcpkix-jdk15on-1.59.jar neo4j
- -common-3.4.0.jar neo4j-collections-3.4.0.jar spring-tx-5.0.6.RELEASE
- .jar javax.annotation-api-1.3.2.jar neo4j-udc-3.4.0.jar jackson-modul
- e-parameter-names-2.9.5.jar neo4j-configuration-3.4.0.jar scala-libra
- ry-2.11.12.jar spring-boot-2.0.2.RELEASE.jar log4j-api-2.10.0.jar spr
- ing-boot-starter-web-2.0.2.RELEASE.jar neo4j-ssl-3.4.0.jar tools.jar 
- attoparser-2.0.4.RELEASE.jar neo4j-kernel-3.4.0.jar neo4j-cypher-runt
- ime-util-3.4.0.jar lucene-queryparser-5.5.5.jar neo4j-lucene-index-3.
- 4.0.jar neo4j-cypher-util-3.4-3.4.0.jar neo4j-graph-algo-3.4.0.jar co
- mmons-compress-1.16.1.jar netty-all-4.1.24.Final.jar spring-jdbc-5.0.
- 6.RELEASE.jar jPowerShell-1.9.jar tomcat-embed-el-8.5.31.jar logback-
- core-1.2.3.jar jackson-core-2.9.5.jar jackson-databind-2.9.5.jar conc
- urrentlinkedhashmap-lru-1.4.2.jar tomcat-embed-core-8.5.31.jar neo4j-
- logging-3.4.0.jar neo4j-cypher-interpreted-runtime-3.4.0.jar asm-util
- -6.0.jar parboiled-core-1.1.7.jar neo4j-values-3.4.0.jar caffeine-2.6
- .2.jar mybatis-3.4.6.jar neo4j-cypher-logical-plans-3.3-3.3.5.jar slf
- 4j-api-1.7.25.jar opencsv-2.3.jar spring-webmvc-5.0.6.RELEASE.jar luc
- ene-codecs-5.5.5.jar WMI4Java-1.6.1.jar spring-aop-5.0.6.RELEASE.jar 
- mybatis-spring-1.3.2.jar parboiled-scala_2.11-1.1.7.jar spring-core-5
- .0.6.RELEASE.jar jboss-logging-3.3.2.Final.jar neo4j-graphdb-api-3.4.
- 0.jar neo4j-consistency-check-3.4.0.jar neo4j-cypher-frontend-2.3-2.3
- .12.jar spring-boot-autoconfigure-2.0.2.RELEASE.jar thymeleaf-3.0.9.R
- ELEASE.jar hibernate-validator-6.0.9.Final.jar neo4j-spatial-index-3.
- 4.0.jar openCypher-frontend-1-3.4.0.jar spring-jcl-5.0.6.RELEASE.jar 
- spring-web-5.0.6.RELEASE.jar spring-context-5.0.6.RELEASE.jar neo4j-j
- mx-3.4.0.jar spring-boot-starter-aop-2.0.2.RELEASE.jar lucene-analyze
- rs-common-5.5.5.jar IKAnalyzer2012FF_u1.jar log4j-to-slf4j-2.10.0.jar
-  commons-text-1.3.jar asm-analysis-6.0.jar jackson-datatype-jsr310-2.
- 9.5.jar spring-boot-starter-tomcat-2.0.2.RELEASE.jar neo4j-cypher-fro
- ntend-3.3-3.3.5.jar objenesis-2.6.jar unbescape-1.1.5.RELEASE.jar bcp
- rov-jdk15on-1.59.jar snakeyaml-1.19.jar neo4j-command-line-3.4.0.jar 
- neo4j-resource-3.4.0.jar neo4j-primitive-collections-3.4.0.jar
+Class-Path: bcpkix-jdk15on-1.59.jar opencsv-2.3.jar openCypher-fronten
+ d-1-3.4.0.jar bcprov-jdk15on-1.59.jar tomcat-embed-el-8.5.31.jar luce
+ ne-core-5.5.5.jar logback-classic-1.2.3.jar spring-web-5.0.6.RELEASE.
+ jar spring-boot-starter-jdbc-2.0.2.RELEASE.jar neo4j-consistency-chec
+ k-3.4.0.jar spring-boot-starter-2.0.2.RELEASE.jar spring-boot-starter
+ -thymeleaf-2.0.2.RELEASE.jar neo4j-cypher-frontend-2.3-2.3.12.jar jac
+ kson-datatype-jsr310-2.9.5.jar asm-analysis-6.0.jar IKAnalyzer2012FF_
+ u1.jar neo4j-cypher-compiler-3.3-3.3.5.jar spring-tx-5.0.6.RELEASE.ja
+ r spring-boot-starter-web-2.0.2.RELEASE.jar scala-library-2.11.12.jar
+  spring-jcl-5.0.6.RELEASE.jar neo4j-configuration-3.4.0.jar commons-c
+ ompress-1.16.1.jar mysql-connector-java-5.1.46.jar neo4j-cypher-expre
+ ssion-3.4-3.4.0.jar caffeine-2.6.2.jar neo4j-graph-algo-3.4.0.jar neo
+ 4j-common-3.4.0.jar neo4j-csv-3.4.0.jar spring-boot-starter-logging-2
+ .0.2.RELEASE.jar neo4j-cypher-compiler-2.3-2.3.12.jar neo4j-udc-3.4.0
+ .jar neo4j-values-3.4.0.jar concurrentlinkedhashmap-lru-1.4.2.jar too
+ ls.jar spring-webmvc-5.0.6.RELEASE.jar neo4j-graphdb-api-3.4.0.jar ne
+ o4j-procedure-api-3.4.0.jar jackson-databind-2.9.5.jar commons-lang3-
+ 3.7.jar scala-reflect-2.11.12.jar aspectjweaver-1.8.13.jar neo4j-cyph
+ er-compiler-3.1-3.1.8.jar spring-beans-5.0.6.RELEASE.jar thymeleaf-sp
+ ring5-3.0.9.RELEASE.jar lucene-analyzers-common-5.5.5.jar lucene-quer
+ yparser-5.5.5.jar netty-all-4.1.24.Final.jar lucene-backward-codecs-5
+ .5.0.jar neo4j-jmx-3.4.0.jar neo4j-resource-3.4.0.jar javax.annotatio
+ n-api-1.3.2.jar spring-boot-autoconfigure-2.0.2.RELEASE.jar neo4j-cyp
+ her-runtime-util-3.4.0.jar neo4j-import-tool-3.4.0.jar attoparser-2.0
+ .4.RELEASE.jar mybatis-spring-1.3.2.jar neo4j-spatial-index-3.4.0.jar
+  spring-boot-starter-aop-2.0.2.RELEASE.jar asm-6.0.jar objenesis-2.6.
+ jar neo4j-primitive-collections-3.4.0.jar jackson-module-parameter-na
+ mes-2.9.5.jar neo4j-index-3.4.0.jar neo4j-command-line-3.4.0.jar spri
+ ng-boot-2.0.2.RELEASE.jar mybatis-spring-boot-starter-1.3.2.jar neo4j
+ -cypher-planner-3.4-3.4.0.jar neo4j-cypher-logical-plans-3.3-3.3.5.ja
+ r commons-text-1.3.jar tomcat-embed-core-8.5.31.jar neo4j-cypher-ir-3
+ .3-3.3.5.jar mybatis-3.4.6.jar snakeyaml-1.19.jar jackson-core-2.9.5.
+ jar neo4j-dbms-3.4.0.jar jProcesses-1.6.4.jar thymeleaf-3.0.9.RELEASE
+ .jar neo4j-unsafe-3.4.0.jar neo4j-cypher-frontend-3.1-3.1.8.jar neo4j
+ -cypher-interpreted-runtime-3.4.0.jar neo4j-lucene-upgrade-3.4.0.jar 
+ neo4j-ssl-3.4.0.jar unbescape-1.1.5.RELEASE.jar log4j-to-slf4j-2.10.0
+ .jar neo4j-3.4.0.jar mybatis-spring-boot-autoconfigure-1.3.2.jar parb
+ oiled-core-1.1.7.jar spring-boot-starter-json-2.0.2.RELEASE.jar neo4j
+ -cypher-frontend-3.3-3.3.5.jar neo4j-cypher-3.4.0.jar neo4j-logging-3
+ .4.0.jar jPowerShell-1.9.jar spring-boot-starter-tomcat-2.0.2.RELEASE
+ .jar classmate-1.3.4.jar neo4j-cypher-ir-3.4-3.4.0.jar spring-context
+ -5.0.6.RELEASE.jar log4j-api-2.10.0.jar jackson-annotations-2.9.0.jar
+  spring-core-5.0.6.RELEASE.jar logback-core-1.2.3.jar jul-to-slf4j-1.
+ 7.25.jar tomcat-embed-websocket-8.5.31.jar neo4j-graph-matching-3.1.6
+ .jar neo4j-cypher-logical-plans-3.4-3.4.0.jar jboss-logging-3.3.2.Fin
+ al.jar neo4j-cypher-util-3.4-3.4.0.jar spring-jdbc-5.0.6.RELEASE.jar 
+ jackson-datatype-jdk8-2.9.5.jar asm-tree-6.0.jar spring-aop-5.0.6.REL
+ EASE.jar neo4j-kernel-api-3.4.0.jar parboiled-scala_2.11-1.1.7.jar ne
+ o4j-kernel-3.4.0.jar lucene-codecs-5.5.5.jar neo4j-io-3.4.0.jar valid
+ ation-api-2.0.1.Final.jar neo4j-codegen-3.4.0.jar neo4j-lucene-index-
+ 3.4.0.jar neo4j-cypher-planner-spi-3.4-3.4.0.jar asm-util-6.0.jar spr
+ ing-expression-5.0.6.RELEASE.jar WMI4Java-1.6.1.jar HikariCP-2.7.9.ja
+ r thymeleaf-extras-java8time-3.0.1.RELEASE.jar hibernate-validator-6.
+ 0.9.Final.jar slf4j-api-1.7.25.jar neo4j-collections-3.4.0.jar
 Main-Class: edu.scu.corpmap.CorpmapApplication
 
