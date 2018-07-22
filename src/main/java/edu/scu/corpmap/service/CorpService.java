@@ -403,11 +403,11 @@ public class CorpService {
             shareholder.setGraphId(startNode.getId());
             shareholder.setSh_name(startNode.getProperty("name").toString());
             shareholder.setMethod(r.getProperty("method", "货币").toString());
-            shareholder.setActual_subscp_date(r.getProperty("actual_subscrp_date", "").toString());
-            shareholder.setSubscription(r.getProperty("subscription", "").toString());
-            shareholder.setSh_type(r.getProperty("sh_type", "").toString());
-            shareholder.setSubscp_date(r.getProperty("subscp_date", "").toString());
-            shareholder.setActual_subscription(r.getProperty("actual_subscription", "").toString());
+            shareholder.setActual_subscp_date(r.getProperty("actual_subscrp_date", "未公示").toString());
+            shareholder.setSubscription(r.getProperty("subscription", "未公示").toString());
+            shareholder.setSh_type(r.getProperty("sh_type", "股东").toString());
+            shareholder.setSubscp_date(r.getProperty("subscp_date", "未公示").toString());
+            shareholder.setActual_subscription(r.getProperty("actual_subscription", "未公示").toString());
             shareholderList.add(shareholder);
         }
     }
