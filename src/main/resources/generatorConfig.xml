@@ -34,7 +34,8 @@
         </javaClientGenerator>
 
         <!--建立数据库中的表与类的映射关系-->
-        <table tableName="hot_corp" domainObjectName="HotCorp"/>
+        <!--<table tableName="hot_corp" domainObjectName="HotCorp"/>-->
+        <table tableName="news_detail" domainObjectName="NewsDetail"/>
 
     </context>
 </generatorConfiguration>
