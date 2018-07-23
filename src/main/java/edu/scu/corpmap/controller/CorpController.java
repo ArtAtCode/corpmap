@@ -105,8 +105,8 @@ public class CorpController {
     public Corp getCorp(Long graphId) {
         Corp corp = corpService.queryCorpByGraphId(graphId);
         // 添加至热搜榜
-//        if (corp != null)
-//            hotCorpService.plusOne(graphId + "", corp.getName());
+        if (corp != null)
+            hotCorpService.plusOne(graphId + "", corp.getName());
         return corp;
     }
 

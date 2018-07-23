@@ -97,6 +97,7 @@ public class CorpService {
                     briefCorp.setReg_auth(node.getProperty("reg_auth").toString());
                     briefCorp.setReg_date(node.getProperty("reg_date").toString());
                     briefCorp.setId(node.getProperty("id").toString());
+                    briefCorp.setState(node.getProperty("state","在营").toString());
                 } catch (NotFoundException e) {
                     continue; //有的企业为边缘节点，即，只有名字，没有其他信息
                 }
@@ -390,7 +391,7 @@ public class CorpService {
         corp.setStartDate(foundNode.getProperty("startDate","").toString());
         corp.setStopDate(foundNode.getProperty("stopDate","").toString());
         corp.setReg_capt(foundNode.getProperty("reg_capt","").toString());
-
+        corp.setGraph_id(foundNode.getId());
         corp.setCorpController(foundNode.getProperty("corpController","非公示项").toString());
     }
 
@@ -402,11 +403,11 @@ public class CorpService {
             shareholder.setGraphId(startNode.getId());
             shareholder.setSh_name(startNode.getProperty("name").toString());
             shareholder.setMethod(r.getProperty("method", "货币").toString());
-            shareholder.setActual_subscp_date(r.getProperty("actual_subscrp_date", "").toString());
-            shareholder.setSubscription(r.getProperty("subscription", "").toString());
-            shareholder.setSh_type(r.getProperty("sh_type", "").toString());
-            shareholder.setSubscp_date(r.getProperty("subscp_date", "").toString());
-            shareholder.setActual_subscription(r.getProperty("actual_subscription", "").toString());
+            shareholder.setActual_subscp_date(r.getProperty("actual_subscrp_date", "未公示").toString());
+            shareholder.setSubscription(r.getProperty("subscription", "未公示").toString());
+            shareholder.setSh_type(r.getProperty("sh_type", "股东").toString());
+            shareholder.setSubscp_date(r.getProperty("subscp_date", "未公示").toString());
+            shareholder.setActual_subscription(r.getProperty("actual_subscription", "未公示").toString());
             shareholderList.add(shareholder);
         }
     }
