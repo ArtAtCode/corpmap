@@ -25,9 +25,34 @@ public class NewsDetailService {
      */
     public List<NewsDetailPreview> getAllNewsDetailPreview() {
         NewsDetailExample newsDetailExample = new NewsDetailExample();
+        newsDetailExample.setOrderByClause("time DESC");
         List<NewsDetail> newsDetailList = newsDetailMapper.selectByExample(newsDetailExample);
         List<NewsDetailPreview> newsDetailPreviewList = NewsDetailPreview.constructFromNewsDetailList(newsDetailList);
         return newsDetailPreviewList;
+    }
+
+    /**
+     * 分页获取新闻列表
+     * @param offset
+     * @param limit
+     * @return
+     */
+    public List<NewsDetailPreview> getAllNewsDetailPreview(int offset, int limit) {
+        NewsDetailExample newsDetailExample = new NewsDetailExample();
+        newsDetailExample.setOrderByClause("time DESC");
+        newsDetailExample.setOffset(offset);
+        newsDetailExample.setLimit(limit);
+        List<NewsDetail> newsDetailList = newsDetailMapper.selectByExampleUsingLimit(newsDetailExample);
+        List<NewsDetailPreview> newsDetailPreviewList = NewsDetailPreview.constructFromNewsDetailList(newsDetailList);
+        return newsDetailPreviewList;
+    }
+
+    /**
+     * 获取新闻总数
+     * @return
+     */
+    public long getNewsCount() {
+        return newsDetailMapper.countByExample(new NewsDetailExample());
     }
 
     /**
@@ -38,12 +63,7 @@ public class NewsDetailService {
      */
     @Transactional(readOnly = true)
     public List<NewsDetailPreview> getLastestNNewsDetailPreview(int N) {
-        NewsDetailExample newsDetailExample = new NewsDetailExample();
-        newsDetailExample.setOrderByClause("time DESC");
-        newsDetailExample.setOffset(0);
-        newsDetailExample.setLimit(N);
-        List<NewsDetail> newsDetailList = newsDetailMapper.selectByExampleUsingLimit(newsDetailExample);
-        List<NewsDetailPreview> newsDetailPreviewList = NewsDetailPreview.constructFromNewsDetailList(newsDetailList);
+        List<NewsDetailPreview> newsDetailPreviewList = getAllNewsDetailPreview(0, N);
         return newsDetailPreviewList;
     }
 

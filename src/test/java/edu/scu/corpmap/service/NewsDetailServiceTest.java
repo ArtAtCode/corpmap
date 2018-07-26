@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- * Created by Vicent_Chen on 2018/7/23.
+ * Created by Vicent_Chen on 2018/7/24.
  *
  * 测试已完全通过 7/23
  */
@@ -30,19 +30,30 @@ public class NewsDetailServiceTest {
     @Test
     public void test001_getAllNewsDetailPreview() {
         List<NewsDetailPreview> list = newsDetailService.getAllNewsDetailPreview();
-        assertEquals(20, list.size());
+        assertEquals(32, list.size());
     }
 
     @Test
     public void test002_getLastestNNewsDetailPreview() {
         List<NewsDetailPreview> list = newsDetailService.getLastestNNewsDetailPreview(10);
         assertEquals(10, list.size());
-        assertEquals(20, (int)list.get(0).getId());
+        assertEquals(32, (int)list.get(0).getId());
     }
 
     @Test
     public void test003_getNewsDetailById() {
         NewsDetail newsDetail = newsDetailService.getNewsDetailById(20);
         assertEquals("NULL", newsDetail.getPreviewImage());
+    }
+
+    @Test
+    public void test004_getAllNewsDetailPreview() {
+        List<NewsDetailPreview> list = newsDetailService.getAllNewsDetailPreview(0, 10);
+        assertEquals(10, list.size());
+    }
+
+    @Test
+    public void test005_getNewsCount() {
+        assertEquals(32, newsDetailService.getNewsCount());
     }
 }
