@@ -25,8 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /***
  * create by LMJ
@@ -98,14 +98,34 @@ public class CorpService {
                     briefCorp.setReg_date(node.getProperty("reg_date").toString());
                     briefCorp.setId(node.getProperty("id").toString());
                     briefCorp.setState(node.getProperty("state","在营").toString());
+                    briefCorp.setReg_capt((node.getProperty("reg_capt","100.00万人民币").toString()));
                 } catch (NotFoundException e) {
                     continue; //有的企业为边缘节点，即，只有名字，没有其他信息
                 }
+
                 briefCorpInfoList.add(briefCorp);
             }
             tx.success();
         }
+        corpSort(briefCorpInfoList);
         return briefCorpInfoList;
+    }
+    private  void corpSort(List<BriefCorp> corpList){
+
+        Collections.sort(corpList, new Comparator<BriefCorp>() {
+            @Override
+            public int compare(BriefCorp o1, BriefCorp o2) {
+                String capt1 = o1.getReg_capt().toString();
+                String capt2 = o2.getReg_capt().toString();
+                if(capt1.equals("******")) capt1 = "50万人民币";
+                if(capt2.equals("******")) capt2="50万人民币";
+                double a = Double.parseDouble(capt1.substring(0,capt1.length()-4));
+                double b = Double.parseDouble(capt2.substring(0,capt2.length()-4));
+                if(a>b)  return -1;
+                else if(a==b) return 0;
+                else return 1;
+            }
+        });
     }
 
     /**
