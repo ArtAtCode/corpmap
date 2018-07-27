@@ -18,13 +18,41 @@ $.ajax({
     }
 });
 
+$.ajax({
+    type: "get",
+    url: "news_preview?N=5",
+    dataType: "json",
+    success: function (data) {
+        var news_preview_loc = $("#news_preview");
+        var news_preview_template = $("#news-preview-tempalte");
+
+        for (var i = data.length-1; i >= 0; i--) {
+            var news_preview = news_preview_template.clone();
+            news_preview.attr("id", data[i].id);
+
+            if (data[i].previewImage == null)
+                news_preview.find(".news-preview-image").attr("src", "images/pedaily.jpg");
+            else
+                news_preview.find(".news-preview-image").attr("src", data[i].previewImage);
+
+            news_preview.find(".news-preview-title").text(data[i].title);
+            news_preview.find(".news-preview-title").attr("href", "news_detail.html?id="+data[i].id);
+
+            time = new Date(data[i].time)
+            news_preview.find(".news-preview-time").text(time.toLocaleString());
+            news_preview_loc.after(news_preview);
+        }
+        news_preview_template.remove();
+    }
+});
+
 $(function () {
     var history_loc = $("#history");
     var history = getHistory();
     for (var i = 0; i < history.length; i++) {
         history_loc.append("<option>" + history[i] + "</option>");
     }
-})
+});
 
 // 加载搜索历史
 function getHistory() {
