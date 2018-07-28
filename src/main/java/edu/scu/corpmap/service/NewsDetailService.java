@@ -78,10 +78,6 @@ public class NewsDetailService {
     @Transactional(readOnly = true)
     public NewsDetail getNewsDetailById(int id) {
         NewsDetail newsDetail = newsDetailMapper.selectByPrimaryKey(id);
-        String content = newsDetail.getContent();
-        newsDetail.setContent(content.substring(1, content.length()-1));
-        String title = newsDetail.getTitle();
-        newsDetail.setTitle(title.substring(1, title.length()-1));
         return newsDetail;
     }
 }

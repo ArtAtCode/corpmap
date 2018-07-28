@@ -19,15 +19,14 @@ public class NewsDetailPreview {
         NewsDetailPreview newsDetailPreview = new NewsDetailPreview();
         newsDetailPreview.setId(newsDetail.getId());
 
-        String title = newsDetail.getTitle();
-        newsDetailPreview.setTitle(title.substring(1, title.length()-1));
+        newsDetailPreview.setTitle(newsDetail.getTitle());
         newsDetailPreview.setTime(newsDetail.getTime());
 
         String previewImage = newsDetail.getPreviewImage();
         if (previewImage.equals("NULL"))
             newsDetailPreview.setPreviewImage(null);
         else
-            newsDetailPreview.setPreviewImage(previewImage.substring(1, previewImage.length()-1));
+            newsDetailPreview.setPreviewImage(previewImage);
 
         return newsDetailPreview;
     }
