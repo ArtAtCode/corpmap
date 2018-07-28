@@ -96,6 +96,9 @@
                     // 经营异常信息
                     var irgs = data.irgOpts;
                     var irg_template = $('.irg-template');
+                    if(irgs.size() > 0){
+                        //在该企业后面加上（该企业被列入经营异常目录）
+                    }
                     for (var i = 0; i < irgs.length; i++) {
                         var irgOpt = irgs[i];
                         var irg = irg_template.clone();
@@ -161,6 +164,7 @@
                 <div class="navbar-header" style="padding-top:12px">
                     <img alt="Brand" src="images/person_white.png" style="length:30px; width:30px; padding-top:0px">
                     <a style="color:#e6e6e6; margin-top:20px"href="about-us.html">Art@Code - 中软杯</a>
+                    <a style="color:#e6e6e6; margin-left:20px "href="index.html">主页</a>
                 </div>
             </div>
         </nav>
