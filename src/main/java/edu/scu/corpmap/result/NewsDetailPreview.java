@@ -18,11 +18,12 @@ public class NewsDetailPreview {
     public static NewsDetailPreview constructFromNewsDetail(NewsDetail newsDetail) {
         NewsDetailPreview newsDetailPreview = new NewsDetailPreview();
         newsDetailPreview.setId(newsDetail.getId());
+
         newsDetailPreview.setTitle(newsDetail.getTitle());
-        newsDetail.setTime(newsDetail.getTime());
+        newsDetailPreview.setTime(newsDetail.getTime());
 
         String previewImage = newsDetail.getPreviewImage();
-        if (previewImage.equals("NULL"))
+        if (previewImage == null || previewImage.equals("NULL"))
             newsDetailPreview.setPreviewImage(null);
         else
             newsDetailPreview.setPreviewImage(previewImage);

@@ -50,4 +50,9 @@ public class DirectController {
     public String aboutus(){
         return "about-us";
     }
+
+    @RequestMapping("news_detail.html")
+    public String newsDetail() {
+        return "news_detail";
+    }
 }

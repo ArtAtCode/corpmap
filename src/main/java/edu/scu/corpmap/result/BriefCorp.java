@@ -9,6 +9,7 @@ public class BriefCorp extends CorpResult{
     private String state;       // 经营状态
     private String reg_date;    // 成立日期
     private String name;        // 公司名称
+    private String Reg_capt;    // 注册资本
 
     public static BriefCorp constructFromCorp(Corp corp) {
         BriefCorp briefCorp = new BriefCorp();
@@ -68,5 +69,13 @@ public class BriefCorp extends CorpResult{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getReg_capt() {
+        return Reg_capt;
+    }
+
+    public void setReg_capt(String reg_capt) {
+        Reg_capt = reg_capt;
     }
 }

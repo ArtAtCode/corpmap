@@ -6,6 +6,7 @@ import edu.scu.corpmap.service.NewsDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -17,19 +18,22 @@ public class NewsDetailController {
     @Autowired
     private NewsDetailService newsDetailService;
 
-    @RequestMapping("news")
+    @RequestMapping("news_preview")
+    @ResponseBody
     public List<NewsDetailPreview> getNewsList(int N) {
         List<NewsDetailPreview> list = newsDetailService.getLastestNNewsDetailPreview(N);
         return list;
     }
 
     @RequestMapping("news_count")
+    @ResponseBody
     public long getNewsCount() {
         long newsCount = newsDetailService.getNewsCount();
         return newsCount;
     }
 
-    @RequestMapping("news_detail")
+    @RequestMapping("news")
+    @ResponseBody
     public NewsDetail getNewsDetail(int id) {
         NewsDetail newsDetail = newsDetailService.getNewsDetailById(id);
         return newsDetail;
