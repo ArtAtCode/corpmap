@@ -3,10 +3,14 @@
 
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <title>企业信息族谱分析-查询结果</title>
     <link rel="stylesheet" href="assets/bootstrap/bootstrap.min.css">
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=TmROT2FpWnlYnvk1xhA6hP6xtE44QtRR"></script>
+
     <style type="text/css">
         #content {
             font-size: 15px;
@@ -136,6 +140,24 @@
 
                     shs = data.shareholders;
                     console.log(data);
+
+                    // 百度地图API功能
+                    var map = new BMap.Map("amap");
+                    // 创建地址解析器实例
+                    var myGeo = new BMap.Geocoder();
+                    // 将地址解析结果显示在地图上,并调整地图视野
+                    var addr = data.address;
+                    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+                    myGeo.getPoint(addr, function(point){
+                        if (point) {
+                            map.centerAndZoom(point, 16);
+                            var marker = new BMap.Marker(point);  // 创建标注
+                            map.addOverlay(marker);               // 将标注添加到地图中
+                            marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+                        }else{
+                            alert("暂无该公司定位");
+                        }
+                    });
                 }
             });
         });
@@ -193,7 +215,9 @@
             </div>
             <div id="info" style="padding-top:10px; padding-left:100px; padding-right:100px">
                 <div class="panel panel-default" style="background-color:rgba(0, 0, 0, 0)">
-                    <div class="panel-heading">基本信息</div>
+                    <div class="panel-heading">基本信息
+                        <a class="sh_detail_href" data-toggle='modal' data-target='#map' style="margin-left:20px; font-size: small">地址</a>
+                    </div>
                     <!-- Table -->
                     <table class="table" style="margin-top:30px;">
                         <tbody>
@@ -428,13 +452,18 @@
     </div>
 </div>
 
+<!--地图模态框-->
+<div class="modal fade" id="map" tabindex="-1" role="dialog" aria-labelledby="login-title" aria-hidden="true">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">公司地址</div>
+            <div class="modal-body" style="text-align:center;">
+                <div id="amap" style="width:570px;height:400px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 
 </html>
-
-<!--
-第一栏是基础信息，就是你demo里做的，下面是是股权结构（一个列表），还有变更信息（列表），还有经营异常信息（列表）。
-第二栏是投资族谱，就是那张图，该公司的对外投资，可以控制层数（最大五层），
-第三栏是企业图谱，公司的对外对投资情况，被投资情况。可控制层数。（最大五层），
-第四栏目是任职人员在外情况。
--->

@@ -108,7 +108,7 @@
             </div>
             <div id="info" style="padding-top:10px; padding-left:100px; padding-right:100px">
                 <div class="panel panel-default" style="background-color:rgba(0, 0, 0, 0)">
-                    <div class="panel-heading">企业族谱    【鼠标移至图标或关系上查看详细信息】</div>
+                    <div class="panel-heading">【拖动结点可查看局部关系，鼠标悬停在图标或文字上查看详细信息】</div>
                     <div class="panel-body">
                         <div  style="text-align:right">
                             <div class="btn-group">
@@ -153,8 +153,8 @@
             .selectAll('*')
             .remove();
         var max_layer = num;
-        var img_w = 47;
-        var img_h = 60;
+        var img_w = 24;
+        var img_h = 32;
         var svg = d3.select("body").select("svg"),
             width = +svg.attr("width"),
             height = +svg.attr("height");
@@ -249,13 +249,13 @@
 
             var edges_text = svg.selectAll(".linetext")
                 .data(bilinks)
-                .enter()
-                .append("text")
                 .attr("class","linetext")
                 .style("stroke","#1874CD")
+                .enter().append("text")
                 .text(function(d){
-                    return d[2];
-                });
+                    return d[2]
+                })
+                .style("font-size","13px");
 
             var node = svg.selectAll("image")
                 .data(nodes.filter(function(d) { return d.name; }))
@@ -289,6 +289,7 @@
                 .enter()
                 .append("text")
                 .attr("class","nodetext")
+                .style("font-size","12px")
                 .text(function(d){
                     return d.name;
                 });
@@ -308,61 +309,35 @@
                 nodes_text.attr("x",node_x);
                 nodes_text.attr("y",node_y);
             }
-            /*
-              node.on("mouseover",function(d)
-                {
-
-                    var x =d3.event.pageX+45;
-                    var y =d3.event.pageY+45;
-                    //添加标签
-                    svg.append("text")
-                        .attr("id","tooltip")
-                        .attr("x",x)
-                        .attr("y",y)
-                        .attr("text-anchor","middle")
-                        .attr("font-family","sans-setif")
-                        .attr("font-size","11px")
-                        .attr("font-weight","bold")
-                        .attr("fill","black")
-                        //文本内容
-                        .text("投资额：100万元");
-
-                })
-                //鼠标移出时通过ID移除标签
-                .on("mouseout",function(d)
-                {
-                    d3.select("#tooltip").remove();
-                });    */
-
         });
 
         function positionLink(d) {
-            var sx = d[0].x + 25 + d[3] * 8;
-            var sy = d[0].y + 50 + d[3] * 8;
-            var tx = d[1].x + 25 + d[3] * 8;
-            var ty = d[1].y + 50 + d[3] * 8;
+            var sx = d[0].x + 10 + d[3] * 8;
+            var sy = d[0].y + 15 + d[3] * 8;
+            var tx = d[1].x + 10 + d[3] * 8;
+            var ty = d[1].y + 15 + d[3] * 8;
             return "M" + sx + "," + sy
                 + " " + tx + "," + ty;
         }
 
         function binode_x(d) {
-            var sx = d[0].x + 25 + d[3] * 8;
-            var tx = d[1].x + 25 + d[3] * 8;
+            var sx = d[0].x + 10 + d[3] * 8;
+            var tx = d[1].x + 10 + d[3] * 8;
             return sx + (tx - sx) * d[4];
         }
 
         function binode_y(d) {
-            var sy = d[0].y + 50 + d[3] * 8;
-            var ty = d[1].y + 50 + d[3] * 8;
+            var sy = d[0].y + 15 + d[3] * 8;
+            var ty = d[1].y + 15 + d[3] * 8;
             return sy + (ty - sy) * d[4];
         }
 
         function node_x(d) {
-            return d.x + 12;
+            return d.x + 5;
         }
 
         function node_y(d) {
-            return d.y + 85;
+            return d.y + 39;
         }
 
         function positionNode(d) {
