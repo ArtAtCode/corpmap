@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="assets/bootstrap/bootstrap.min.css">
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script src="http://d3js.org/topojson.v1.min.js"></script>
     <style type="text/css">
         #content
         {
@@ -109,7 +108,7 @@
             </div>
             <div id="info" style="padding-top:10px; padding-left:100px; padding-right:100px">
                 <div class="panel panel-default" style="background-color:rgba(0, 0, 0, 0)">
-                    <div class="panel-heading">任职族谱</div>
+                    <div class="panel-heading">【拖动结点可查看局部关系，鼠标悬停在图标或文字上查看详细信息】</div>
                     <div class="panel-body">
                         <div  style="text-align:right">
                             <div class="btn-group">
@@ -163,7 +162,7 @@
         var color = d3.scaleOrdinal(d3.schemeCategory20);
 
         var simulation = d3.forceSimulation()
-            .force("link", d3.forceLink().distance(180).strength(0.8))
+            .force("link", d3.forceLink().distance(180).strength(0.5))
             .force("charge", d3.forceManyBody())
             .force("center", d3.forceCenter(width / 2, height / 4))
 
@@ -251,15 +250,13 @@
 
             var edges_text = svg.selectAll(".linetext")
                 .data(bilinks)
-//                .enter()
-//                .append("text")
                 .attr("class","linetext")
                 .style("stroke","#1874CD")
                 .enter().append("text")
                 .text(function(d){
                     return d[2]
                 })
-                .style("font-size","9px");
+                .style("font-size","12px");
 
 
             var node = svg.selectAll("image")
@@ -290,7 +287,7 @@
                 .text(function(d){
                     return d.name;
                 })
-                .style("font-size","12px");
+                .style("font-size","13px");
 
             simulation
                 .nodes(nodes)
