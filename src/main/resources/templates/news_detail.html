@@ -8,39 +8,11 @@
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <style type="text/css">
-        #content {
-            font-size: 15px;
-            border-width: 0;
-            background: rgba(255, 255, 255, 0.3);
-            margin-top: 25px;
-        }
-
-        #content:hover {
-            background-color: rgba(255, 255, 255, 0.5);
-        }
-
-        .panel-default > .panel-heading {
-            margin-top: 60px;
-            font-size: 18px;
-        }
-
-        .table > tbody > tr > td {
-            padding-left: 10px;
-            padding-right: 10px;
-            font-size: 14px;
-            max-width: 180px;
-
-        }
-
-        .table > thead > tr > th {
-            padding-left: 10px;
-            padding-right: 10px;
-            max-width: 180px;
-
-        }
-
-        #item {
-            font-weight: bold;
+        .orginstr {
+            padding-left: 100px;
+            padding-right: 100px;
+            font-size: 14px!important;
+            text-align: center;
         }
     </style>
 
@@ -60,9 +32,13 @@
                 dataType: "json",
                 success: function (data) {
                     $("#title").text(data.title);
-                    $("#time").text(new Date(data.time).toLocaleString());
+                    $("#time").text(new Date(data.time).toLocaleDateString());
                     var obj = document.getElementById("detail");
                     obj.innerHTML = data.content;
+
+                    var orginstr = $(".orginstr").clone();
+                    $(".orginstr").remove();
+                    $("#title").after(orginstr);
                 }
             })
         });
