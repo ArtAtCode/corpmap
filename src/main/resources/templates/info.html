@@ -96,9 +96,7 @@
                     // 经营异常信息
                     var irgs = data.irgOpts;
                     var irg_template = $('.irg-template');
-                    if(irgs.size() > 0){
-                        //在该企业后面加上（该企业被列入经营异常目录）
-                    }
+//                  TODO: 在该企业后面加上（该企业被列入经营异常目录）
                     for (var i = 0; i < irgs.length; i++) {
                         var irgOpt = irgs[i];
                         var irg = irg_template.clone();

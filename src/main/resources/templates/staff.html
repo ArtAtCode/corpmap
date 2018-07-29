@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="assets/bootstrap/bootstrap.min.css">
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
     <style type="text/css">
         #content
         {
@@ -154,8 +154,8 @@
             .selectAll('*')
             .remove();
         var max_layer = num;
-        var img_w = 47;
-        var img_h = 60;
+        var img_w = 24;
+        var img_h = 32;
         var svg = d3.select("body").select("svg"),
             width = +svg.attr("width"),
             height = +svg.attr("height");
@@ -163,9 +163,9 @@
         var color = d3.scaleOrdinal(d3.schemeCategory20);
 
         var simulation = d3.forceSimulation()
-            .force("link", d3.forceLink().distance(300).strength(0.3))
+            .force("link", d3.forceLink().distance(180).strength(0.8))
             .force("charge", d3.forceManyBody())
-            .force("center", d3.forceCenter(width / 2, height / 4));
+            .force("center", d3.forceCenter(width / 2, height / 4))
 
 //		d3.json("json/relation3.json", function(error, graph) {
         d3.json("staff-map?graphId="+graphId, function(error, graph) {
@@ -179,7 +179,7 @@
             initnodes.forEach(function(node){
                 if(node.layer <= max_layer){
                     nodes.push(node);
-                    console.log(node);
+//                  console.log(node);
                 }
             });
 
@@ -215,7 +215,7 @@
 
             for(var i=0; i<links.length; i++){
                 if(links[i].layer >= max_layer) continue;
-                console.log(links[i].source, links[i].layer);
+//              console.log(links[i].source, links[i].layer);
                 var key = links[i].source.name < links[i].target.name ? links[i].source.name+':'+links[i].target.name: links[i].target.name+':'+links[i].source.name;
                 links[i].size = linkmap[key];
                 //同一组的关系进行编号
@@ -248,15 +248,19 @@
                 .attr("class", "link")
                 .attr("marker-end", "url(#arrow)" );//根据箭头标记的id号标记箭头
 
+
             var edges_text = svg.selectAll(".linetext")
                 .data(bilinks)
-                .enter()
-                .append("text")
+//                .enter()
+//                .append("text")
                 .attr("class","linetext")
                 .style("stroke","#1874CD")
+                .enter().append("text")
                 .text(function(d){
-                    return d[2];
-                });
+                    return d[2]
+                })
+                .style("font-size","9px");
+
 
             var node = svg.selectAll("image")
                 .data(nodes.filter(function(d) { return d.name; }))
@@ -285,7 +289,8 @@
                 .attr("class","nodetext")
                 .text(function(d){
                     return d.name;
-                });
+                })
+                .style("font-size","12px");
 
             simulation
                 .nodes(nodes)
@@ -302,61 +307,35 @@
                 nodes_text.attr("x",node_x);
                 nodes_text.attr("y",node_y);
             }
-            /*
-              node.on("mouseover",function(d)
-                {
-
-                    var x =d3.event.pageX+45;
-                    var y =d3.event.pageY+45;
-                    //添加标签
-                    svg.append("text")
-                        .attr("id","tooltip")
-                        .attr("x",x)
-                        .attr("y",y)
-                        .attr("text-anchor","middle")
-                        .attr("font-family","sans-setif")
-                        .attr("font-size","11px")
-                        .attr("font-weight","bold")
-                        .attr("fill","black")
-                        //文本内容
-                        .text("投资额：100万元");
-
-                })
-                //鼠标移出时通过ID移除标签
-                .on("mouseout",function(d)
-                {
-                    d3.select("#tooltip").remove();
-                });    */
-
         });
 
         function positionLink(d) {
-            var sx = d[0].x + 25 + d[3] * 8;
-            var sy = d[0].y + 50 + d[3] * 8;
-            var tx = d[1].x + 25 + d[3] * 8;
-            var ty = d[1].y + 50 + d[3] * 8;
+            var sx = d[0].x + 10 + d[3] * 8;
+            var sy = d[0].y + 15 + d[3] * 8;
+            var tx = d[1].x + 10 + d[3] * 8;
+            var ty = d[1].y + 15 + d[3] * 8;
             return "M" + sx + "," + sy
                 + " " + tx + "," + ty;
         }
 
         function binode_x(d) {
-            var sx = d[0].x + 25 + d[3] * 8;
-            var tx = d[1].x + 25 + d[3] * 8;
+            var sx = d[0].x + 10 + d[3] * 8;
+            var tx = d[1].x + 10 + d[3] * 8;
             return sx + (tx - sx) * d[4];
         }
 
         function binode_y(d) {
-            var sy = d[0].y + 50 + d[3] * 8;
-            var ty = d[1].y + 50 + d[3] * 8;
+            var sy = d[0].y + 15 + d[3] * 8;
+            var ty = d[1].y + 15 + d[3] * 8;
             return sy + (ty - sy) * d[4];
         }
 
         function node_x(d) {
-            return d.x + 12;
+            return d.x + 5;
         }
 
         function node_y(d) {
-            return d.y + 85;
+            return d.y + 39;
         }
 
         function positionNode(d) {
