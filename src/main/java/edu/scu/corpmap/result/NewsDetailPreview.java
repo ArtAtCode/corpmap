@@ -23,7 +23,7 @@ public class NewsDetailPreview {
         newsDetailPreview.setTime(newsDetail.getTime());
 
         String previewImage = newsDetail.getPreviewImage();
-        if (previewImage.equals("NULL"))
+        if (previewImage == null || previewImage.equals("NULL"))
             newsDetailPreview.setPreviewImage(null);
         else
             newsDetailPreview.setPreviewImage(previewImage);

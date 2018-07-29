@@ -35,6 +35,7 @@ $.ajax({
             else
                 news_preview.find(".news-preview-image").attr("src", data[i].previewImage);
 
+            news_preview.find(".new-preview-image-link").attr("href", "news_detail.html?id="+data[i].id);
             news_preview.find(".news-preview-title").text(data[i].title);
             news_preview.find(".news-preview-title").attr("href", "news_detail.html?id="+data[i].id);
 
