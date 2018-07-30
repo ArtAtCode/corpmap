@@ -79,6 +79,7 @@
                 <div class="navbar-header" style="padding-top:12px">
                     <img alt="Brand" src="images/person_white.png" style="length:30px; width:30px; padding-top:0px">
                     <a style="color:#e6e6e6; margin-top:20px "href="about-us.html">Art@Code - 中软杯</a>
+                    <a style="color:#e6e6e6; margin-left:20px "href="index.html">主页</a>
                 </div>
             </div>
         </nav>
@@ -162,7 +163,7 @@
         var color = d3.scaleOrdinal(d3.schemeCategory20);
 
         var simulation = d3.forceSimulation()
-            .force("link", d3.forceLink().distance(300).strength(0.3))
+            .force("link", d3.forceLink().distance(180).strength(0.5))
             .force("charge", d3.forceManyBody())
             .force("center", d3.forceCenter(width / 2, height / 4));
 

@@ -63,7 +63,13 @@
 
                         var corp = corp_template.clone();
                         corp.children(".company_name").attr("href", "info.html?graphId="+data[i].graphId+"&name="+data[i].name);
-                        corp.children(".company_name").text(data[i].name);
+                        var irgs = data[i].irgOpts;
+                        if(!irgs){
+                            corp.children(".company_name").text(data[i].name);
+                        }
+                        else{
+                            corp.children(".company_name").text(data[i].name + "【该公司被列入经营异常名录】");
+						}
                         corp.find(".type").text("公司类型：" + format(data[i].type));
                         corp.find(".reg_auth").text("注册机关：" + format(data[i].reg_auth));
                         corp.find(".id").text("统一社会信用代码：" + format(data[i].id));
