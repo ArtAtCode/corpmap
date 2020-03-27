@@ -27,3 +27,4 @@ ${neo4j.embedded-path/
 /dist/
 /nbdist/
 /.nb-gradle/
+out

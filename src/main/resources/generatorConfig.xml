@@ -5,10 +5,10 @@
 
 <generatorConfiguration>
     <!--class path: 本地MySQL JDBC驱动的绝对路径-->
-    <classPathEntry location="F:/Maven/repository/mysql/mysql-connector-java/6.0.6/mysql-connector-java-6.0.6.jar" />
+    <classPathEntry location="/Users/liumengjin/.m2/repository/mysql/mysql-connector-java/5.1.46/mysql-connector-java-5.1.46.jar" />
     <context id="DB2Tables" targetRuntime="MyBatis3">
         <jdbcConnection driverClass = "com.mysql.jdbc.Driver"
-                        connectionURL = "jdbc:mysql://120.77.212.58:3306/corpmap?characterEncoding=utf8"
+                        connectionURL = "jdbc:mysql://123.56.74.157:3306/corpmap?characterEncoding=utf8"
                         userId = "root"
                         password = "root">
             <!--忽略MySQL自带表-->
@@ -20,21 +20,21 @@
         </javaTypeResolver>
 
         <!--targetProject: 项目的本地路径-->
-        <javaModelGenerator targetPackage="edu.scu.corpmap.entity.mysql" targetProject="F:/ChinaSoftwareCup/code/corpmap/src/main/java">
+        <javaModelGenerator targetPackage="edu.scu.corpmap.entity.mysql" targetProject="/Users/liumengjin/desktop/corpmap/src/main/java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="mapper"  targetProject="F:/ChinaSoftwareCup/code/corpmap/src/main/resources">
+        <sqlMapGenerator targetPackage="mapper"  targetProject="/Users/liumengjin/desktop/corpmap/src/main/resources">
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="edu.scu.corpmap.dao"  targetProject="F:/ChinaSoftwareCup/code/corpmap/src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="edu.scu.corpmap.dao"  targetProject="/Users/liumengjin/desktop/corpmap/src/main/java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
         <!--建立数据库中的表与类的映射关系-->
-        <!--<table tableName="hot_corp" domainObjectName="HotCorp"/>-->
+        <table tableName="hot_corp" domainObjectName="HotCorp"/>
         <table tableName="news_detail" domainObjectName="NewsDetail"/>
 
     </context>

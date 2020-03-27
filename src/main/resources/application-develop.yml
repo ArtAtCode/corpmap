@@ -8,7 +8,7 @@ spring:
     # get correct time
     time-zone: GMT+8
   datasource:
-    url: jdbc:mysql://120.77.212.58:3306/corpmap?characterEncoding=utf8
+    url: jdbc:mysql://123.56.74.157:3306/corpmap?characterEncoding=utf8
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
@@ -23,9 +23,11 @@ spring:
 
 neo4j:
   # The absolute path of neo4j
-  embedded-path: F:/Neo4J/data/neo4jDatabases/database-41ff1e90-3b8a-4a56-947a-c20b0dac9924/installation-3.4.0/data/databases/corpmap.db
+  embedded-path: /Users/liumengjin/neo4j-community-3.5.16/data/databases/graph.db
 # Mybatis conf
 # TODO: change mybatis conf
 mybatis:
   mapperlocations: /mapper/**Mapper.xml
   type-aliases-package: edu.scu.corpmap.entity.mysql
+  table:
+    auto: update
